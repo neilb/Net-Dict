@@ -1,0 +1,15 @@
+README
+MANIFEST
+Makefile.PL
+ChangeLog
+lib/Net/Dict.pm
+lib/Net/Dict.pod
+dict
+tkdict
+examples/simple.pl
+examples/portuguese.pl
+t/connection.t
+t/database.t
+t/define.t
+t/match.t
+t/auth.test
