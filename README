@@ -1,6 +1,5 @@
 
 				Net::Dict
-				  v2.09
 
 This distribution contains the Net::Dict module for Perl.
 Net::Dict is a class implementing a simple client API
