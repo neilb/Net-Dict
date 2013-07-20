@@ -4,6 +4,8 @@
 2.10 2013-07-20
 
     - Reformatted this file according to CPAN::Changes::Spec
+    - Repository details added to metadata (Makefile.PL) and pod
+    - License type added to metadata (Makefile.PL)
 
 2.09 2011-12-18
 

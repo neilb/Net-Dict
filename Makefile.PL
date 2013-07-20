@@ -31,6 +31,13 @@ EOF
 		EXE_FILES	=> [qw(dict tkdict)],
 		AUTHOR		=> 'Neil Bowers <neil@bowers.com>',
 		ABSTRACT_FROM	=> 'lib/Net/Dict.pod',
+        META_MERGE => {
+            resources => {
+                repository => 'https://github.com/neilbowers/Net-Dict',
+            },
+        },
+        LICENSE      => 'perl',
+
                 dist		=> {COMPRESS => 'gzip', SUFFIX => 'gz'},
               );
 

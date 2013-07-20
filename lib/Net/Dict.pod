@@ -381,6 +381,10 @@ including other libraries and clients.
 
 =back
 
+=head1 REPOSITORY
+
+L<https://github.com/neilbowers/Net-Dict>
+
 =head1 AUTHOR
 
 The first version of Net::Dict was written by
