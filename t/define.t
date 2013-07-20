@@ -109,6 +109,7 @@ if (!$@
     && do {
         foreach my $entry (sort {$a->[0] cmp $b->[0]} @{ $defref })
         {
+            $entry->[1] =~ s/\r//sg;
             $string .= $entry->[0]."\n";
             $string .= $entry->[1];
         }
@@ -153,6 +154,7 @@ if (!$@
     && do {
         foreach my $entry (sort {$a->[0] cmp $b->[0]} @{ $defref })
         {
+            $entry->[1] =~ s/\r//sg;
             $string .= $entry->[0]."\n";
             $string .= $entry->[1];
         }
@@ -393,7 +395,19 @@ exit 0;
 
 __DATA__
 ==== *-biscuit ====
-web1913
+
+52 Moby Thesaurus words for "biscuit":
+   Brussels biscuit, Melba toast, adobe, bisque, bone, bowl, brick,
+   brownie, cement, ceramic ware, ceramics, china, cookie, cracker,
+   crock, crockery, date bar, dust, enamelware, firebrick, fruit bar,
+   ginger snap, gingerbread man, glass, graham cracker, hardtack, jug,
+   ladyfinger, macaroon, mummy, parchment, pilot biscuit, porcelain,
+   pot, pottery, pretzel, refractory, rusk, saltine, sea biscuit,
+   ship biscuit, shortbread, sinker, soda cracker, stick,
+   sugar cookie, tile, tiling, urn, vase, wafer, zwieback
+
+
+gcide
 Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
    bizcocho, Pg. biscouto), fr. L. bis twice + coctus, p. p. of
    coquere to cook, bake. See {Cook}, and cf. {Bisque} a kind of
@@ -401,31 +415,37 @@ Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
    1. A kind of unraised bread, of many varieties, plain, sweet,
       or fancy, formed into flat cakes, and bakes hard; as, ship
       biscuit.
+      [1913 Webster]
 
             According to military practice, the bread or biscuit
             of the Romans was twice prepared in the oven.
                                                   --Gibbon.
+      [1913 Webster]
 
    2. A small loaf or cake of bread, raised and shortened, or
       made light with soda or baking powder. Usually a number
       are baked in the same pan, forming a sheet or card.
+      [1913 Webster]
 
    3. Earthen ware or porcelain which has undergone the first
       baking, before it is subjected to the glazing.
+      [1913 Webster]
 
    4. (Sculp.) A species of white, unglazed porcelain, in which
       vases, figures, and groups are formed in miniature.
+      [1913 Webster]
 
    {Meat biscuit}, an alimentary preparation consisting of
       matters extracted from meat by boiling, or of meat ground
       fine and combined with flour, so as to form biscuits.
+      [1913 Webster]
 wn
 biscuit
-     n 1: small round bread leavened with baking-powder or soda
-     2: any of various small flat sweet cakes (`biscuit' is the
-        British term) [syn: {cookie}, {cooky}]
+    n 1: small round bread leavened with baking-powder or soda
+    2: any of various small flat sweet cakes (`biscuit' is the
+       British term) [syn: {cookie}, {cooky}, {biscuit}]
 ==== !-biscuit ====
-web1913
+gcide
 Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
    bizcocho, Pg. biscouto), fr. L. bis twice + coctus, p. p. of
    coquere to cook, bake. See {Cook}, and cf. {Bisque} a kind of
@@ -433,62 +453,84 @@ Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
    1. A kind of unraised bread, of many varieties, plain, sweet,
       or fancy, formed into flat cakes, and bakes hard; as, ship
       biscuit.
+      [1913 Webster]
 
             According to military practice, the bread or biscuit
             of the Romans was twice prepared in the oven.
                                                   --Gibbon.
+      [1913 Webster]
 
    2. A small loaf or cake of bread, raised and shortened, or
       made light with soda or baking powder. Usually a number
       are baked in the same pan, forming a sheet or card.
+      [1913 Webster]
 
    3. Earthen ware or porcelain which has undergone the first
       baking, before it is subjected to the glazing.
+      [1913 Webster]
 
    4. (Sculp.) A species of white, unglazed porcelain, in which
       vases, figures, and groups are formed in miniature.
+      [1913 Webster]
 
    {Meat biscuit}, an alimentary preparation consisting of
       matters extracted from meat by boiling, or of meat ground
       fine and combined with flour, so as to form biscuits.
+      [1913 Webster]
 ==== *-antispasmodic_agent ====
 wn
 antispasmodic agent
-     n : a drug used to relieve or prevent spasms (especially of the
-         smooth muscles) [syn: {antispasmodic}, {spasmolytic}]
+    n 1: a drug used to relieve or prevent spasms (especially of the
+         smooth muscles) [syn: {antispasmodic}, {spasmolytic},
+         {antispasmodic agent}]
 ==== *-oboe_damore ====
-web1913
+gcide
 Oboe \O"boe\, n. [It., fr. F. hautbois. See {Hautboy}.] (Mus.)
    One of the higher wind instruments in the modern orchestra,
    yet of great antiquity, having a penetrating pastoral quality
    of tone, somewhat like the clarinet in form, but more
    slender, and sounded by means of a double reed; a hautboy.
+   [1913 Webster]
 
    {Oboe d'amore} [It., lit., oboe of love], and {Oboe di
    caccia} [It., lit., oboe of the chase], are names of obsolete
       modifications of the oboe, often found in the scores of
       Bach and Handel.
+      [1913 Webster]
 wn
 oboe d'amore
-     n : a oboe pitched a minor third lower than the ordinary oboe;
+    n 1: an oboe pitched a minor third lower than the ordinary oboe;
          used to perform baroque music
 ==== *-kod ====
+gcide
+KO \KO\ v. t. [imp. & p. p. {KO'd}; p. pr. & vb. n. {KO'ing}.]
+   To knock out; to deliver a blow that renders (the opponent)
+   unconscious; -- used especially in boxing. [acronym]
+
+   Syn: knockout.
+        [WordNet 1.5]
+gcide
+KO'd \KO'd\ adj. [from {KO}, v. t.]
+   rendered unconscious, usually by a blow.
+
+   Syn: knocked out(predicate), kayoed, out(predicate), stunned.
+        [WordNet 1.5]
 wn
 KO'd
-     adj : knocked unconscious by a heavy blow [syn: {knocked out(p)},
-           {kayoed}, {KO'd}, {out(p)}, {stunned}]
+    adj 1: knocked unconscious by a heavy blow [syn: {knocked
+           out(p)}, {kayoed}, {KO'd}, {out(p)}, {stunned}]
 ==== *-pityrogramma_calomelanos_aureoflava ====
 wn
 Pityrogramma calomelanos aureoflava
-     n : tropical American fern having fronds with light golden
+    n 1: tropical American fern having fronds with light golden
          undersides [syn: {golden fern}, {Pityrogramma calomelanos
          aureoflava}]
 ==== wn-banana ====
 wn
 banana
-     n 1: any of several tropical and subtropical treelike herbs of
-          the genus Musa having a terminal crown of large entire
-          leaves and usually bearing hanging clusters of elongated
-          fruits [syn: {banana tree}]
-     2: elongated crescent-shaped yellow fruit with soft sweet flesh
+    n 1: any of several tropical and subtropical treelike herbs of
+         the genus Musa having a terminal crown of large entire
+         leaves and usually bearing hanging clusters of elongated
+         fruits [syn: {banana}, {banana tree}]
+    2: elongated crescent-shaped yellow fruit with soft sweet flesh
 ==== END ====

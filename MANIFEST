@@ -1,7 +1,7 @@
 README
 MANIFEST
 Makefile.PL
-ChangeLog
+Changes
 lib/Net/Dict.pm
 lib/Net/Dict.pod
 dict

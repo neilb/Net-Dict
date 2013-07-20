@@ -27,8 +27,8 @@ while (<DATA>)
 {
     if (/^==== END ====$/)
     {
-	$section = undef;
-	next;
+        $section = undef;
+        next;
     }
 
     if (/^==== (\S+) ====$/)
@@ -87,7 +87,7 @@ else
 $string = '';
 eval { %dbhash = $dict->dbs(); };
 if (!$@
-    && defined %dbhash
+    && %dbhash
     && do { foreach my $db (sort keys %dbhash) { $string .= "${db}:$dbhash{$db}\n"; }; 1; }
     && $string eq $TESTDATA{dblist})
 {
@@ -95,6 +95,7 @@ if (!$@
 }
 else
 {
+    print STDERR "TEST 4 failed\nExpected:\n$TESTDATA{dblist}\nBut got:\n$string\n";
     print "not ok 4\n";
 }
 
@@ -155,6 +156,7 @@ if (!$@
 }
 else
 {
+    print STDERR "TEST 8 failed\nExpected:\n$TESTDATA{'dbinfo-wn'}\nBut got:\n--------\n$dbinfo\n--------\n";
     print "not ok 8\n";
 }
 
@@ -249,68 +251,126 @@ exit 0;
 
 __DATA__
 ==== dblist ====
-devils:THE DEVIL'S DICTIONARY ((C)1911 Released April 15 1993)
+afr-deu:Afrikaans-German Freedict dictionary
+all:All Dictionaries (English-Only and Translating)
+ara-eng:Arabic-English FreeDict Dictionary
+bouvier:Bouvier's Law Dictionary, Revised 6th Ed (1856)
+cro-eng:Croatian-English Freedict Dictionary
+cze-eng:Czech-English Freedict dictionary
+dan-eng:Danish-English Freedict dictionary
+deu-eng:German-English Freedict dictionary
+deu-fra:German-French Freedict dictionary
+deu-ita:German-Italian Freedict dictionary
+deu-nld:German-Dutch Freedict dictionary
+deu-por:German-Portuguese Freedict dictionary
+devil:The Devil's Dictionary (1881-1906)
 easton:Easton's 1897 Bible Dictionary
-elements:Elements database 20001107
-foldoc:The Free On-line Dictionary of Computing (09 FEB 02)
-gazetteer:U.S. Gazetteer (1990)
+elements:The Elements (07Nov00)
+eng-ara:English-Arabic FreeDict Dictionary
+eng-cro:English-Croatian Freedict Dictionary
+eng-cze:English-Czech fdicts/FreeDict Dictionary
+eng-deu:English-German Freedict dictionary
+eng-fra:English-French Freedict dictionary
+eng-hin:English-Hindi Freedict Dictionary
+eng-hun:unknown
+eng-iri:English-Irish Freedict dictionary
+eng-ita:English-Italian Freedict dictionary
+eng-lat:English-Latin Freedict dictionary
+eng-nld:English-Dutch Freedict dictionary
+eng-por:English-Portuguese Freedict dictionary
+eng-rom:English-Romanian FreeDict dictionary
+eng-rus:English-Russian Freedict dictionary
+eng-scr:English-Serbo-Croat Freedict dictionary
+eng-spa:English-Spanish Freedict dictionary
+eng-swa:English-Swahili xFried/FreeDict Dictionary
+eng-swe:English-Swedish Freedict dictionary
+eng-tur:English-Turkish FreeDict Dictionary
+eng-wel:English-Welsh Freedict dictionary
+english:English Monolingual Dictionaries
+foldoc:The Free On-line Dictionary of Computing (26 July 2010)
+fra-deu:French-German Freedict dictionary
+fra-eng:French-English Freedict dictionary
+fra-nld:French-Dutch Freedict dictionary
+gaz2k-counties:U.S. Gazetteer Counties (2000)
+gaz2k-places:U.S. Gazetteer Places (2000)
+gaz2k-zips:U.S. Gazetteer Zip Code Tabulation Areas (2000)
+gcide:The Collaborative International Dictionary of English v.0.48
+gla-deu:Scottish Gaelic-German Freedict dictionary
+hin-eng:English-Hindi Freedict Dictionary [reverse index]
 hitchcock:Hitchcock's Bible Names Dictionary (late 1800's)
-jargon:Jargon File (4.3.0, 30 APR 2001)
-vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms December 2001
-web1913:Webster's Revised Unabridged Dictionary (1913)
-wn:WordNet (r) 1.7
+hun-eng:unknown
+iri-eng:Irish-English Freedict dictionary
+ita-deu:Italian-German Freedict dictionary
+ita-eng:Italian-English Freedict dictionary
+jargon:The Jargon File (version 4.4.7, 29 Dec 2003)
+jpn-deu:Japanese-German Freedict dictionary
+lat-deu:Latin-German Freedict dictionary
+lat-eng:Latin-English Freedict dictionary
+moby-thes:Moby Thesaurus II by Grady Ward, 1.0
+nld-deu:Dutch-German Freedict dictionary
+nld-eng:Dutch-English Freedict dictionary
+nld-fra:Dutch-French Freedict dictionary
+por-deu:Portuguese-German Freedict dictionary
+por-eng:Portuguese-English Freedict dictionary
+scr-eng:Serbo-Croat-English Freedict dictionary
+slo-eng:Slovak-English Freedict dictionary
+spa-eng:Spanish-English Freedict dictionary
+swa-eng:Swahili-English xFried/FreeDict Dictionary
+swe-eng:Swedish-English Freedict dictionary
+trans:Translating Dictionaries
+tur-deu:Turkish-German Freedict dictionary
+tur-eng:English-Turkish FreeDict Dictionary [reverse index]
+vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms (June 2006)
+wel-eng:Welsh-English Freedict dictionary
+wn:WordNet (r) 3.0 (2006)
+world02:CIA World Factbook 2002
 world95:The CIA World Factbook (1995)
 ==== dbtitle-wn ====
-WordNet (r) 1.7
+WordNet (r) 3.0 (2006)
 ==== dbinfo-wn ====
+============ wn ============
 00-database-info
-     This file was converted from the original database on:
-                Sat Jun 23 14:21:23 2001
+This file was converted from the original database on:
+          2010-10-06T15:55:24
 
-      
-      The original data is available from:
-         http://www.cogsci.princeton.edu/~wn/
-      
-      The original data was distributed with the notice shown
-      below.  No additional restrictions are claimed.  Please
-      redistribute this changed version under the same conditions
-      and restriction that apply to the original version.
-      
-         This software and database is being provided to you, the
-         LICENSEE, by Princeton University under the following
-         license.  By obtaining, using and/or copying this
-         software and database, you agree that you have read,
-         understood, and will comply with these terms and
-         conditions.:
-         
-         Permission to use, copy, modify and distribute this
-         software and database and its documentation for any
-         purpose and without fee or royalty is hereby granted,
-         provided that you agree to comply with the following
-         copyright notice and statements, including the
-         disclaimer, and that the same appear on ALL copies of the
-         software, database and documentation, including
-         modifications that you make for internal use or for
-         distribution.
-         
-         WordNet 1.7 Copyright 2001 by Princeton University.  All
-         rights reserved.
-         
-         THIS SOFTWARE AND DATABASE IS PROVIDED "AS IS" AND
-         PRINCETON UNIVERSITY MAKES NO REPRESENTATIONS OR
-         WARRANTIES, EXPRESS OR IMPLIED.  BY WAY OF EXAMPLE, BUT
-         NOT LIMITATION, PRINCETON UNIVERSITY MAKES NO
-         REPRESENTATIONS OR WARRANTIES OF MERCHANT- ABILITY OR
-         FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE
-         LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT
-         INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS
-         OR OTHER RIGHTS.
-         
-         The name of Princeton University or Princeton may not be
-         used in advertising or publicity pertaining to
-         distribution of the software and/or database.  Title to
-         copyright in this software, database and any associated
-         documentation shall at all times remain with Princeton
-         University and LICENSEE agrees to preserve same.
+The original data is available from:
+     ftp://ftp.cogsci.princeton.edu/pub/wordnet/2.0
+
+The original data was distributed with the notice shown below. No
+additional restrictions are claimed.  Please redistribute this changed
+version under the same conditions and restriction that apply to the
+original version.
+
+
+This software and database is being provided to you, the LICENSEE, by  
+Princeton University under the following license.  By obtaining, using  
+and/or copying this software and database, you agree that you have  
+read, understood, and will comply with these terms and conditions.:  
+
+Permission to use, copy, modify and distribute this software and  
+database and its documentation for any purpose and without fee or  
+royalty is hereby granted, provided that you agree to comply with  
+the following copyright notice and statements, including the disclaimer,  
+and that the same appear on ALL copies of the software, database and  
+documentation, including modifications that you make for internal  
+use or for distribution.  
+
+WordNet 3.0 Copyright 2006 by Princeton University.  All rights reserved.  
+
+THIS SOFTWARE AND DATABASE IS PROVIDED "AS IS" AND PRINCETON  
+UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR  
+IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PRINCETON  
+UNIVERSITY MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANT-  
+ABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE  
+OF THE LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT  
+INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR  
+OTHER RIGHTS.  
+
+The name of Princeton University or Princeton may not be used in  
+advertising or publicity pertaining to distribution of the software  
+and/or database.  Title to copyright in this software, database and  
+any associated documentation shall at all times remain with  
+Princeton University and LICENSEE agrees to preserve same.  
+
 
 ==== END ====

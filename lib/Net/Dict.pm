@@ -8,8 +8,6 @@
 # redistribute it and/or modify it under the same terms as Perl
 # itself.
 #
-# $Id: Dict.pm,v 2.7 2003/05/05 23:55:14 neilb Exp $
-#
 
 package Net::Dict;
 
@@ -18,8 +16,8 @@ use IO::Socket;
 use Net::Cmd;
 use Carp;
 
-use vars qw(@ISA $VERSION $debug);
-$VERSION = sprintf("%d.%02d", q$Revision: 2.7 $ =~ /(\d+)\.(\d+)/);
+use vars qw(@ISA $debug);
+our $VERSION = '2.09';
 
 #-----------------------------------------------------------------------
 # Default values for arguments to new(). We also use this to

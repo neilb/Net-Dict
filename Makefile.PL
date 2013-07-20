@@ -6,7 +6,7 @@
 
 use ExtUtils::MakeMaker;
 
-my $DEFAULT_HOST = 'test.dict.org';
+my $DEFAULT_HOST = 'dict.org';
 my $DEFAULT_PORT = 2628;
 
 $test_config_file = 't/test_host.cfg';
@@ -22,7 +22,7 @@ EOF
 &WriteMakefile(
                 NAME		=> 'Net::Dict',
                 DISTNAME	=> 'Net-Dict',
-		VERSION_FROM	=> 'lib/Net/Dict.pm',
+            VERSION_FROM	=> 'lib/Net/Dict.pm',
                 PREREQ_PM	=> {
                                  'IO::Socket'	=> 0,
                                  'Net::Cmd'	=> 0,
