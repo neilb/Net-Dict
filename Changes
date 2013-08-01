@@ -1,5 +1,13 @@
 
 		ChangeLog for Net-Dict distribution
+		
+x.xx 2013-08-01
+
+    - added methods ldbs, lstrategies which return lists instead of hashes
+    - removed double quotes from _DEFINE and _MATCH for Serpento (conform to RFC)
+    - use _unline() instead of chomp() to remove CRLF at end of line (conform to RFC)
+    - cache the results of dbs() and strategies()
+    - removed autoflush(1), which is default in IO::Socket
 
 2.10 2013-07-20
 

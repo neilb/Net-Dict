@@ -1,6 +1,7 @@
 #
 # Net::Dict.pm
 #
+# Copyright (c) 2006-2013 Helmut Wollmersdorfer <helmut.wollmersdorfer@gmx.at>
 # Copyright (C) 2001-2003 Neil Bowers <neil@bowers.com>
 # Copyright (c) 1998 Dmitry Rubinstein <dimrub@wisdom.weizmann.ac.il>.
 #
@@ -8,6 +9,49 @@
 # redistribute it and/or modify it under the same terms as Perl
 # itself.
 #
+#-----------------------------------------------------------
+# changes based on Dict.pm,v 2.7 2003/05/05 23:55:14 neilb
+#
+# 2006-10-06: Wollmersdorfer
+# added methods ldbs, lstrategies which return lists instead of hashes
+#
+# 2007-05-27: Wollmersdorfer
+# removed double quotes from _DEFINE and _MATCH for Serpento
+#
+# 2007-06-05: Wollmersdorfer
+# use _unline() instead of chomp() to remove CRLF at end of line
+# cache the results of dbs() and strategies()
+#
+# 2007-06-07: Wollmersdorfer
+# removed autoflush(1), which is default in IO::Socket
+#-----------------------------------------------------------
+
+=note
+
+TODO:
+
+nprefix
+
+Like prefix but returns the specified range of matches. For
+example, when prefix strategy returns 1000 matches, you can
+get only 100 ones skipping the first 800 matches.  This is
+made by specified these limits in a query like this:
+800#100#app, where 800 is skip count, 100 is a number of
+matches you want to get and "app" is your query.  This
+strategy allows to implement DICT client with fast
+autocompletion (although it is not trivial) just like many
+standalone dictionary programs do.
+
+NOTE: If you access the dictionary "*" (or virtual one) with
+nprefix strategy, the same range is set for each database in
+it, but globally for all matches found in all databases.
+
+NOTE: In case you access non-english dictionary the returned
+matches may be (and mostly will be) NOT ordered in alphabetic
+order.
+
+
+=cut
 
 package Net::Dict;
 
@@ -83,7 +127,7 @@ sub new
                                );
 
     return undef
-	unless defined $self;
+    	unless defined $self;
 
     ${*$self}{'net_dict_host'} = $host;
 
@@ -122,6 +166,15 @@ sub dbs
     return %{${*$self}{'net_dict_dbs'}};
 }
 
+sub ldbs
+{
+    @_ == 1 or croak 'usage: $dict->ldbs()';
+    my $self = shift;
+
+    $self->_get_database_list();
+    return \@{${*$self}{'net_dict_ldbs'}};
+}
+
 sub setDicts
 {
     my $self = shift;
@@ -136,7 +189,7 @@ sub serverInfo
 
     return 0
         unless $self->_SHOW_SERVER();
-    my $info = join('', @{$self->read_until_dot});
+    my $info = join('', @{$self->read_until_dot()});
     $self->getline();
     $info;
 }
@@ -179,17 +232,18 @@ sub strategies
 {
     @_ == 1 or croak 'usage: $dict->strategies()';
     my $self = shift;
-    return 0
-        unless $self->_SHOW_STRAT();
-    my(%strats, $name, $desc);
-    foreach (@{$self->read_until_dot()})
-    {
-        ($name, $desc) = (split /\s/, $_, 2);
-        chomp $desc;
-        $strats{$name} = _unquote($desc);
-    }
-    $self->getline();
-    %strats;
+
+    $self->_get_strategies_list();
+    return %{${*$self}{'net_dict_strats'}};
+}
+
+sub lstrategies
+{
+    @_ == 1 or croak 'usage: $dict->lstrategies()';
+    my $self = shift;
+
+    $self->_get_strategies_list();
+    \@{${*$self}{'net_dict_lstrats'}};
 }
 
 sub define
@@ -215,13 +269,13 @@ sub define
     foreach $db (@dbs)
     {
         next
-            unless $self->_DEFINE($db, $word);
+            unless $self->_DEFINE($db, qq{"$word"});
 
         my ($defNum) = ($self->message =~ /^\d{3} (\d+) /);
         foreach (0..$defNum-1)
         {
             my ($d) = ($self->getline =~ /^\d{3} ".*" (\w+) /);
-            my ($def) = join '', @{$self->read_until_dot};
+            my ($def) = join '', @{$self->read_until_dot()};
             push @defs, [$d, $def];
         }
         $self->getline();
@@ -251,17 +305,16 @@ sub match
 
     foreach $db (@dbs)
     {
-        next unless $self->_MATCH($db, $strat, $word);
+        next unless $self->_MATCH($db, $strat, qq{"$word"});
 
         my ($db, $w);
-        foreach (@{$self->read_until_dot}) {
-            ($db, $w) = split /\s/, $_, 2;
-            chomp $w;
-            push @matches, [$db, _unquote($w)];
+        foreach (@{$self->read_until_dot()}) {
+            ($db, $w) = split(/\s+/, $_, 2);
+            push @matches, [$db, _unquote(_unline($w))];
         }
         $self->getline();
     }
-    \@matches; 
+    \@matches;
 }
 
 sub auth
@@ -337,8 +390,8 @@ sub msg_id
 }
 
 
-sub _DEFINE { shift->command('DEFINE', map { '"'.$_.'"' } @_)->response() == CMD_INFO }
-sub _MATCH { shift->command('MATCH', map { '"'.$_.'"' } @_)->response() == CMD_INFO }
+sub _DEFINE { shift->command('DEFINE', @_)->response() == CMD_INFO }
+sub _MATCH { shift->command('MATCH', @_)->response() == CMD_INFO }
 sub _SHOW_DB { shift->command('SHOW DB')->response() == CMD_INFO }
 sub _SHOW_STRAT { shift->command('SHOW STRAT')->response() == CMD_INFO }
 sub _SHOW_INFO { shift->command('SHOW INFO', @_)->response() == CMD_INFO }
@@ -367,6 +420,13 @@ sub DESTROY
     if (defined fileno($self)) {
         $self->quit;
     }
+}
+
+sub response_text {
+    @_ == 1 or croak 'usage: $dict->msg_id() - takes no arguments';
+    my $self = shift;
+
+    return ${*$self}{'net_cmd_resp'};
 }
 
 sub response
@@ -406,6 +466,22 @@ sub _unquote
         $string =~ s/^"//;
         $string =~ s/"$//;
     }
+    return $string;
+}
+
+#=======================================================================
+#
+# _unline
+#
+# Private function used to remove line separators at end of string
+# NOTE: chomp() cannot be used, it does not conform to RFC
+#
+#=======================================================================
+
+sub _unline
+{
+    my $string = shift;
+    $string =~ s/[\x0A\x0D]+$//g;
     return $string;
 }
 
@@ -457,7 +533,7 @@ sub _parse_banner
 # We check to see whether we've already got the databases first,
 # and do nothing if so. This means that this private method
 # can just be invoked in the public methods.
-# 
+#
 #=======================================================================
 sub _get_database_list
 {
@@ -466,20 +542,48 @@ sub _get_database_list
 
     return if exists ${*$self}{'net_dict_dbs'};
 
-    if ($self->_SHOW_DB)
-    {
-	my($dbNum)= ($self->message =~ /^\d{3} (\d+)/);
-	my($name, $descr);
- 	foreach (0..$dbNum-1)
+    if ( $self->_SHOW_DB() ) {
+        my($name, $desc);
+        @{${*$self}{'net_dict_ldbs'}} = ();
+        foreach ( @{$self->read_until_dot()} ) {
+            ($name, $desc) = split(/\s+/, $_, 2);
+            ${${*$self}{'net_dict_dbs'}}{$name} = _unquote(_unline($desc));
+            push @{${*$self}{'net_dict_ldbs'}},
+                [$name, _unquote(_unline($desc))];
+        }
+        $self->getline();
+    }
+}
+
+#=======================================================================
+#
+# _get_strategies_list
+#
+# Get the list of strategies on the remote server.
+# We cache them in the instance data object, so that dbTitle()
+# and databases() don't have to go to the server every time.
+#
+# We check to see whether we've already got the strategies first,
+# and do nothing if so. This means that this private method
+# can just be invoked in the public methods.
+#
+#=======================================================================
+sub _get_strategies_list {
+    my $self = shift;
+
+    return if exists ${*$self}{'net_dict_strats'};
+
+    if ( $self->_SHOW_STRAT() ) {
+        my($name, $desc);
+        @{${*$self}{'net_dict_lstrats'}} = ();
+        foreach (@{$self->read_until_dot()})
         {
-            ($name, $descr) = (split /\s/, $self->getline, 2);
-            chomp $descr;
-            ${${*$self}{'net_dict_dbs'}}{$name} = _unquote($descr);
-	}
-	# Is there a way to do it right? Reading the dot line and the
-	# status line afterwards? Maybe I should use read_until_dot?
-	$self->getline();
-	$self->getline();
+            ($name, $desc) = split(/\s+/, $_, 2);
+            ${${*$self}{'net_dict_strats'}}{$name} = _unquote(_unline($desc));
+            push @{${*$self}{'net_dict_lstrats'}},
+                    [$name, _unquote(_unline($desc))];
+        }
+        $self->getline();
     }
 }
 
