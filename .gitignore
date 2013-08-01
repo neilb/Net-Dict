@@ -1,0 +1,20 @@
+# hidden files
+.*
+!.gitignore
+!.perltidyrc
+!.perlcriticrc
+
+# MAC specific
+._*
+.DS_Store
+
+# editor backup files
+*~
+*.bak
+
+# generated build files
+blib
+Makefile*
+!Makefile.PL
+
+
