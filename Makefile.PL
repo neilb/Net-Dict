@@ -9,6 +9,12 @@ use ExtUtils::MakeMaker;
 my $DEFAULT_HOST = 'dict.org';
 my $DEFAULT_PORT = 2628;
 
+my $mm_ver = $ExtUtils::MakeMaker::VERSION;
+if ($mm_ver =~ /_/) { # dev version
+    $mm_ver = eval $mm_ver;
+    die $@ if $@;
+}
+
 $test_config_file = 't/test_host.cfg';
 
 print <<EOF;
@@ -20,26 +26,32 @@ EOF
 &configure_testsuite();
 
 &WriteMakefile(
-                NAME		=> 'Net::Dict',
-                DISTNAME	=> 'Net-Dict',
-            VERSION_FROM	=> 'lib/Net/Dict.pm',
-                PREREQ_PM	=> {
-                                 'IO::Socket'	=> 0,
-                                 'Net::Cmd'	=> 0,
-                                 'Carp'		=> 0,
-                                },
-		EXE_FILES	=> [qw(dict tkdict)],
-		AUTHOR		=> 'Neil Bowers <neil@bowers.com>',
-		ABSTRACT_FROM	=> 'lib/Net/Dict.pod',
-        META_MERGE => {
-            resources => {
-                repository => 'https://github.com/neilbowers/Net-Dict',
-            },
+    NAME		=> 'Net::Dict',
+    DISTNAME	=> 'Net-Dict',
+    VERSION_FROM	=> 'lib/Net/Dict.pm',
+    PREREQ_PM	=> {
+                     'IO::Socket'     => 0,
+                     'Net::Cmd'	      => 0,
+                     'Carp'		      => 0,
+                     'AppConfig::Std' => 0,
+                    },
+    EXE_FILES	=> [qw(dict tkdict)],
+    AUTHOR		=> 'Neil Bowers <neil@bowers.com>',
+    ABSTRACT_FROM	=> 'lib/Net/Dict.pod',
+    META_MERGE => {
+        resources => {
+            repository => 'https://github.com/neilbowers/Net-Dict',
         },
-        LICENSE      => 'perl',
+    },
+    LICENSE      => 'perl',
+    dist		=> {COMPRESS => 'gzip', SUFFIX => 'gz'},
 
-                dist		=> {COMPRESS => 'gzip', SUFFIX => 'gz'},
-              );
+    ($mm_ver >= 6.48
+        ? (MIN_PERL_VERSION => 5.006)
+        : ()
+    ),
+
+);
 
 sub configure_testsuite
 {

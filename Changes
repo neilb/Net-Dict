@@ -3,6 +3,7 @@
 
 2.13 2013-12-23
     - Added "use warnings" to Net::Dict
+    - Specified min perl version as 5.006 in Makefile.PL
 
 2.12 2013-11-18
 
