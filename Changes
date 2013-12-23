@@ -1,6 +1,18 @@
 
 		ChangeLog for Net-Dict distribution
 
+2.13 2013-12-23
+    - Added "use warnings" to Net::Dict
+
+2.12 2013-11-18
+
+    - Corrected the dependency I meant to add in the previous release.
+      I added a dependency on Net::Dict (ie itself) instead.
+
+2.11 2013-11-15
+
+    - Added missing dependency (AppConfig::Std) to Makefile.PL
+
 2.10 2013-07-20
 
     - Reformatted this file according to CPAN::Changes::Spec
