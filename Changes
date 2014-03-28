@@ -1,6 +1,10 @@
 
 		ChangeLog for Net-Dict distribution
 
+2.14 2014-03-28
+    - We weren't correctly handling dictionary db names containing a '-'.
+      Fix from RJBS.
+
 2.13 2013-12-23
     - Added "use warnings" to Net::Dict
     - Specified min perl version as 5.006 in Makefile.PL

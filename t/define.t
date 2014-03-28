@@ -395,18 +395,6 @@ exit 0;
 
 __DATA__
 ==== *-biscuit ====
-
-52 Moby Thesaurus words for "biscuit":
-   Brussels biscuit, Melba toast, adobe, bisque, bone, bowl, brick,
-   brownie, cement, ceramic ware, ceramics, china, cookie, cracker,
-   crock, crockery, date bar, dust, enamelware, firebrick, fruit bar,
-   ginger snap, gingerbread man, glass, graham cracker, hardtack, jug,
-   ladyfinger, macaroon, mummy, parchment, pilot biscuit, porcelain,
-   pot, pottery, pretzel, refractory, rusk, saltine, sea biscuit,
-   ship biscuit, shortbread, sinker, soda cracker, stick,
-   sugar cookie, tile, tiling, urn, vase, wafer, zwieback
-
-
 gcide
 Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
    bizcocho, Pg. biscouto), fr. L. bis twice + coctus, p. p. of
@@ -439,6 +427,18 @@ Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
       matters extracted from meat by boiling, or of meat ground
       fine and combined with flour, so as to form biscuits.
       [1913 Webster]
+moby-thes
+52 Moby Thesaurus words for "biscuit":
+   Brussels biscuit, Melba toast, adobe, bisque, bone, bowl, brick,
+   brownie, cement, ceramic ware, ceramics, china, cookie, cracker,
+   crock, crockery, date bar, dust, enamelware, firebrick, fruit bar,
+   ginger snap, gingerbread man, glass, graham cracker, hardtack, jug,
+   ladyfinger, macaroon, mummy, parchment, pilot biscuit, porcelain,
+   pot, pottery, pretzel, refractory, rusk, saltine, sea biscuit,
+   ship biscuit, shortbread, sinker, soda cracker, stick,
+   sugar cookie, tile, tiling, urn, vase, wafer, zwieback
+
+
 wn
 biscuit
     n 1: small round bread leavened with baking-powder or soda
