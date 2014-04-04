@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 #
 # dict - perl DICT client (for accessing network dictionary servers)
 #
@@ -6,6 +6,7 @@
 #
 
 use strict;
+use warnings;
 use Net::Dict;
 use AppConfig::Std;
 

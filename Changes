@@ -1,5 +1,9 @@
 Revision history for Perl module Net::Dict
 
+2.15 2014-04-04
+    - tkdict script had a very site-specific #! path. Changed to use env.
+      RT#92184
+
 2.14 2014-03-28
     - We weren't correctly handling dictionary db names containing a '-'.
       Fix from RJBS.

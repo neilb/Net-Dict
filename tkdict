@@ -1,4 +1,4 @@
-#!/apps/perl5/bin/perl -w
+#!/usr/bin/env perl
 #
 # tkdict - a Perl/Tk DICT client, for accessing network dictionary servers
 #
@@ -7,6 +7,7 @@
 #
 
 use strict;
+use warnings;
 
 use Tk;
 use Tk::Dialog;
