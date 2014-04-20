@@ -4,8 +4,8 @@
 #
 
 use Net::Dict;
-use lib qw(. ./blib/lib ../blib/lib ./t);
-require 'test_host.cfg';
+use lib 't/lib';
+use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
 use Env qw($VERBOSE);
 
 $^W = 1;
@@ -54,7 +54,7 @@ while (<DATA>)
 #-----------------------------------------------------------------------
 # Make sure we have HOST and PORT specified
 #-----------------------------------------------------------------------
-if (defined($HOST) && defined($PORT))
+if (defined($TEST_HOST) && defined($TEST_PORT))
 {
     print "ok 1\n";
 }
@@ -66,7 +66,7 @@ else
 #-----------------------------------------------------------------------
 # connect to server
 #-----------------------------------------------------------------------
-eval { $dict = Net::Dict->new($HOST, Port => $PORT); };
+eval { $dict = Net::Dict->new($TEST_HOST, Port => $TEST_PORT); };
 if (!$@ && defined $dict)
 {
     print "ok 2\n";

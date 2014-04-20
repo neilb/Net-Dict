@@ -3,17 +3,21 @@
 #
 
 use Net::Dict;
-use lib qw(. ./blib/lib ../blib/lib ./t);
-require 'test_host.cfg';
-
+use strict;
 $^W = 1;
+
+use Test::More 0.88 tests => 17;
+
+use lib 't/lib';
+use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
 
 my $WARNING;
 my %TESTDATA;
 my $section;
 my @caps;
-
-print "1..17\n";
+my $description;
+my $dict;
+my $string;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 
@@ -23,14 +27,12 @@ $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 #-----------------------------------------------------------------------
 while (<DATA>)
 {
-    if (/^==== END ====$/)
-    {
-	$section = undef;
-	next;
+    if (/^==== END ====$/) {
+        $section = undef;
+        next;
     }
 
-    if (/^==== (\S+) ====$/)
-    {
+    if (/^==== (\S+) ====$/) {
         $section = $1;
         $TESTDATA{$section} = '';
         next;
@@ -44,99 +46,54 @@ while (<DATA>)
 #-----------------------------------------------------------------------
 # Make sure we have HOST and PORT specified
 #-----------------------------------------------------------------------
-if (defined($HOST) && defined($PORT))
-{
-    print "ok 1\n";
-}
-else
-{
-    print "not ok 1\n";
-}
+ok(defined($TEST_HOST) && defined($TEST_PORT), "have a HOST and PORT defined");
 
 #-----------------------------------------------------------------------
 # constructor with no arguments - should result in a die()
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new(); };
-if ((not defined $dict) && $@ =~ /takes at least a HOST/)
-{
-    print "ok 2\n";
-}
-else
-{
-    print "not ok 2\n";
-}
+ok((not defined $dict) && $@ =~ /takes at least a HOST/,
+   "Not passing a DICT server name should croak");
 
 #-----------------------------------------------------------------------
 # pass a hostname of 'undef' we should get undef back
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new(undef); };
-if (not defined $dict)
-{
-    print "ok 3\n";
-}
-else
-{
-    print "not ok 3\n";
-}
+ok((not defined($dict)),
+   "passing undef for hostname should fail");
 
 #-----------------------------------------------------------------------
 # pass a hostname of empty string, should get undef back
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new(''); };
-if (!$@ && not defined $dict && $WARNING =~ /Bad peer address/)
-{
-    print "ok 4\n";
-}
-else
-{
-    print "not ok 4\n";
-}
+ok(!$@ && !defined($dict),
+   "Passing an empty hostname should result in undef");
 
 #-----------------------------------------------------------------------
 # Ok hostname given, but unknown argument passed.
 #	=> return undef
 #	=> doesn't die
 #-----------------------------------------------------------------------
-eval { $dict = Net::Dict->new($HOST, Foo => 'Bar'); };
-if ($@ && !defined $dict && $@ =~ /unknown argument/)
-{
-    print "ok 5\n";
-}
-else
-{
-    print "not ok 5\n";
-}
+eval { $dict = Net::Dict->new($TEST_HOST, Foo => 'Bar'); };
+ok($@ && !defined($dict) && $@ =~ /unknown argument/,
+   "passing an unknown argument to constructor should croak");
 
 #-----------------------------------------------------------------------
 # Ok hostname given, odd number of following arguments passed
 #	=> return undef
 #	=> doesn't die
 #-----------------------------------------------------------------------
-eval { $dict = Net::Dict->new($HOST, 'Foo'); };
-if ($@ =~ /odd number of arguments/)
-{
-    print "ok 6\n";
-}
-else
-{
-    print "not ok 6\n";
-}
+eval { $dict = Net::Dict->new($TEST_HOST, 'Foo'); };
+ok($@ =~ /odd number of arguments/,
+   "Odd number of arguments after hostname should croak");
 
 #-----------------------------------------------------------------------
-# Ok hostname given, odd number of following arguments passed
-#	=> return undef
-#	=> doesn't die
+# Valid hostname and port - should succeed
 #-----------------------------------------------------------------------
 $WARNING = undef;
-eval { $dict = Net::Dict->new($HOST, Port => $PORT); };
-if (!$@ && defined $dict && !defined $WARNING)
-{
-    print "ok 7\n";
-}
-else
-{
-    print "not ok 7\n";
-}
+eval { $dict = Net::Dict->new($TEST_HOST, Port => $TEST_PORT); };
+ok(!$@ && defined $dict && !defined $WARNING,
+   "valid hostname and port to constructor should return object");
 
 #-----------------------------------------------------------------------
 # Check the serverinfo string.
@@ -144,20 +101,18 @@ else
 # We strip off the first two lines, because they have time-varying
 # information; but we make sure they're the lines we think they are.
 #-----------------------------------------------------------------------
+$description = "check serverinfo string";
 my $serverinfo = $dict->serverInfo();
 if (exists $TESTDATA{serverinfo}
-    && defined $serverinfo
+    && defined($serverinfo)
     && do { $serverinfo =~ s/^dictd.*?\n//s}
     && do { $serverinfo =~ s/^On pan\.alephnull\.com.*?[\n\r]+//s}
-    && $serverinfo eq $TESTDATA{serverinfo}
    )
 {
-    print "ok 8\n";
+    is($serverinfo, $TESTDATA{serverinfo}, $description);
 }
-else
-{
-    print STDERR "Test 8, expected string:\n>>\n$TESTDATA{serverinfo}\n<<\nGOT STRING:\n>>\n$serverinfo\n<<\n";
-    print "not ok 8\n";
+else {
+    fail($description);
 }
 
 #-----------------------------------------------------------------------
@@ -165,15 +120,8 @@ else
 # call with an argument - should die since it takes no args.
 #-----------------------------------------------------------------------
 eval { $string = $dict->status('foo'); };
-if ($@
-    && $@ =~ /takes no arguments/)
-{
-    print "ok 9\n";
-}
-else
-{
-    print "not ok 9\n";
-}
+ok ($@ && $@ =~ /takes no arguments/,
+    "status() with an argument should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: status
@@ -181,136 +129,83 @@ else
 # is what we expect
 #-----------------------------------------------------------------------
 eval { $string = $dict->status(); };
-if (!$@
-    && defined $string
-    && $string
-    && $string =~ m!^status \[d/m/c.*\]$!
-   )
-{
-    print "ok 10\n";
-}
-else
-{
-    print "not ok 10\n";
-}
+ok(!$@ && defined $string && $string =~ m!^status \[d/m/c.*\]$!,
+   "status() with no args should result in a particular format string");
 
 #-----------------------------------------------------------------------
 # METHOD: capabilities
 # call with an arg - doesn't take any, and should die
 #-----------------------------------------------------------------------
 eval { @caps = $dict->capabilities('foo'); };
-if ($@
-    && $@ =~ /takes no arguments/
-   )
-{
-    print "ok 11\n";
-}
-else
-{
-    print "not ok 11\n";
-}
+ok($@ && $@ =~ /takes no arguments/,
+   "passing an argument when getting capabilities should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: capabilities
 #-----------------------------------------------------------------------
+$description = "capabilities() should return a lit of them";
 if ($dict->can('capabilities')
     && eval { @caps = $dict->capabilities(); }
+    && !$@
+    && @caps > 0
     && do { $string = join(':', sort(@caps)); 1;}
-    && $string
-    && $string."\n" eq $TESTDATA{'capabilities'}
    )
 {
-    print "ok 12\n";
+    is($string."\n", $TESTDATA{'capabilities'}, $description);
 }
-else
-{
-    print "not ok 12\n";
+else {
+    fail($description);
 }
 
 #-----------------------------------------------------------------------
 # METHOD: has_capability
 # no argument passed
 #-----------------------------------------------------------------------
-if ($dict->can('has_capability')
-    && do { eval { $dict->has_capability(); }; 1;}
-    && $@
-    && $@ =~ /takes one argument/
-   )
-{
-    print "ok 13\n";
-}
-else
-{
-    print "not ok 13\n";
-}
+ok($dict->can('has_capability')
+        && do { eval { $dict->has_capability(); }; 1;}
+        && $@
+        && $@ =~ /takes one argument/,
+   "no argument passed to has_capability() should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: has_capability
 # pass two capability names - should also die()
 #-----------------------------------------------------------------------
-if ($dict->can('has_capability')
-    && do { eval { $dict->has_capability('mime', 'auth'); }; 1; }
-    && $@
-    && $@ =~ /takes one argument/
-   )
-{
-    print "ok 14\n";
-}
-else
-{
-    print "not ok 14\n";
-}
+ok($dict->can('has_capability')
+        && do { eval { $dict->has_capability('mime', 'auth'); }; 1; }
+        && $@
+        && $@ =~ /takes one argument/,
+   "passing to arguments to has_capability() should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: has_capability
 #-----------------------------------------------------------------------
-if ($dict->can('has_capability')
-    && $dict->has_capability('mime')
-    && $dict->has_capability('auth')
-    && !$dict->has_capability('foobar')
-   )
-{
-    print "ok 15\n";
-}
-else
-{
-    print "not ok 15\n";
-}
+ok($dict->can('has_capability')
+        && $dict->has_capability('mime')
+        && $dict->has_capability('auth')
+        && !$dict->has_capability('foobar'),
+    "check valid use of has_capability()");
 
 #-----------------------------------------------------------------------
 # METHOD: msg_id
 # with an argument - should cause it to die()
 #-----------------------------------------------------------------------
-if ($dict->can('msg_id')
-    && do { eval { $string = $dict->msg_id('dict.org'); }; 1;}
-    && $@
-    && $@ =~ /takes no arguments/
-   )
-{
-    print "ok 16\n";
-}
-else
-{
-    print "not ok 16\n";
-}
+ok($dict->can('msg_id')
+        && do { eval { $string = $dict->msg_id('dict.org'); }; 1;}
+        && $@
+        && $@ =~ /takes no arguments/,
+    "Passing an argument to msg_id() should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: msg_id
 # with no arguments, should get valid id back, of the form <...>
 #-----------------------------------------------------------------------
-if ($dict->can('msg_id')
+ok($dict->can('msg_id')
     && do { eval { $string = $dict->msg_id(); }; 1;}
     && !$@
     && defined($string)
-    && $string =~ /^<[^<>]+>$/
-   )
-{
-    print "ok 17\n";
-}
-else
-{
-    print "not ok 17\n";
-}
+    && $string =~ /^<[^<>]+>$/,
+   "calling msg_id() with no arguments should return id of form <...>");
 
 
 exit 0;
