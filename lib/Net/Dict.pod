@@ -351,35 +351,22 @@ dictionary. Thanks to Jose Joao Dias de Almeida for the examples.
 
 =head1 SEE ALSO
 
-=over 4
+L<RFC 2229|https://tools.ietf.org/html/rfc2229> -
+the internet document which defines the DICT protocol.
 
-=item RFC 2229
-
-The internet document which defines the DICT protocol.
-
-http://www.cis.ohio-state.edu/htbin/rfc/rfc2229.html
-
-=item Net::Cmd
-
-A module which provides methods for a network command class,
+L<Net::Cmd> - 
+a module which provides methods for a network command class,
 such as Net::FTP, Net::SMTP, as well as Net::Dict.
 Part of the libnet distribution, available from CPAN.
 
-=item Digest::MD5
+L<Digest::MD5> - 
+you'll need this module if you want to use the B<auth> method.
 
-You'll need this module if you want to use the B<auth> method.
+L<dict.org|http://www.dict.org> -
+the home page for the DICT effort; has links to other resources,
+including other libraries and clients, and C<dictd>,
+the reference DICT server.
 
-=item dictd
-
-The reference DICT server, available from B<dict.org>.
-Also includes a sample dict client, in C.
-
-=item http://www.dict.org/
-
-The home page for the DICT effort; has links to other resources,
-including other libraries and clients.
-
-=back
 
 =head1 REPOSITORY
 
@@ -396,7 +383,7 @@ Neil Bowers E<lt>neil@bowers.comE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2002-2003 Neil Bowers. All rights reserved.
+Copyright (C) 2002-2014 Neil Bowers. All rights reserved.
 
 Copyright (C) 2001 Canon Research Centre Europe, Ltd.
 
