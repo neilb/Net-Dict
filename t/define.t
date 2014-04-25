@@ -3,6 +3,7 @@
 # define.t - Net::Dict testsuite for define() method
 #
 
+use Test::More 0.88 tests => 16;
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -15,8 +16,7 @@ my $defref;
 my $section;
 my $string;
 my $dbinfo;
-
-print "1..16\n";
+my $title;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 
@@ -24,16 +24,13 @@ $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 # Build the hash of test data from after the __DATA__ symbol
 # at the end of this file
 #-----------------------------------------------------------------------
-while (<DATA>)
-{
-    if (/^==== END ====$/)
-    {
-	$section = undef;
-	next;
+while (<DATA>) {
+    if (/^==== END ====$/) {
+        $section = undef;
+        next;
     }
 
-    if (/^==== (\S+) ====$/)
-    {
+    if (/^==== (\S+) ====$/) {
         $section = $1;
         $TESTDATA{$section} = '';
         next;
@@ -47,62 +44,36 @@ while (<DATA>)
 #-----------------------------------------------------------------------
 # Make sure we have HOST and PORT specified
 #-----------------------------------------------------------------------
-if (defined($TEST_HOST) && defined($TEST_PORT))
-{
-    print "ok 1\n";
-}
-else
-{
-    print "not ok 1\n";
-}
+ok(defined($TEST_HOST) && defined($TEST_PORT),
+   "do we have test host and port");
 
 #-----------------------------------------------------------------------
 # connect to server
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new($TEST_HOST, Port => $TEST_PORT); };
-if (!$@ && defined $dict)
-{
-    print "ok 2\n";
-}
-else
-{
-    print "not ok 2\n";
-}
+ok(!$@ && defined $dict, "connect to DICT server");
 
 #-----------------------------------------------------------------------
 # call define() with no arguments - should die
 #-----------------------------------------------------------------------
 eval { $defref = $dict->define(); };
-if ($@ && $@ =~ /takes at least one argument/)
-{
-    print "ok 3\n";
-}
-else
-{
-    print "not ok 3\n";
-}
+ok($@ && $@ =~ /takes at least one argument/,
+   "define() with no arguments should croak");
 
 #-----------------------------------------------------------------------
 # try and get a definition of something which won't have a definition
 # note: at this point we're using the default of '*' for dicts - ie all
 #-----------------------------------------------------------------------
 eval { $defref = $dict->define('asdfghijkl'); };
-if (!$@
-    && defined $defref
-    && int(@{$defref}) == 0)
-{
-    print "ok 4\n";
-}
-else
-{
-    print "not ok 4\n";
-}
+ok(!$@ && defined $defref && int(@{$defref}) == 0,
+   "requesting a definition for a non-existent word should return no entries");
 
 #-----------------------------------------------------------------------
 # METHOD: define
 # get definitions for biscuit, using the default of '*' for DBs
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "do we get expected definitions for 'biscuit'";
 eval { $defref = $dict->define('biscuit'); };
 if (!$@
     && defined($defref)
@@ -114,16 +85,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-biscuit'})
+    })
 {
-    print "ok 5\n";
+    is($string, $TESTDATA{'*-biscuit'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-biscuit'}, "\"\n";
-    print "not ok 5\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -133,21 +100,15 @@ else
 #-----------------------------------------------------------------------
 $dict->setDicts();
 eval { $defref = $dict->define('biscuit'); };
-if ($@
-    && $@ =~ /select some dictionaries/)
-{
-    print "ok 6\n";
-}
-else
-{
-    print "not ok 6\n";
-}
+ok($@ && $@ =~ /select some dictionaries/,
+   "calling define() after selecting empty DB list should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: define
 # get definitions for biscuit, specifying '*' explicitly for dicts
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "check definitions for 'biscuit', setting '*' for DBs";
 eval { $defref = $dict->define('biscuit', '*'); };
 if (!$@
     && defined($defref)
@@ -159,16 +120,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-biscuit'})
+    })
 {
-    print "ok 7\n";
+    is($string, $TESTDATA{'*-biscuit'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-biscuit'}, "\"\n";
-    print "not ok 7\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -176,6 +133,7 @@ else
 # get definitions for biscuit, specifying '!' explicitly for dicts
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "check result for 'biscuit' with DB set to '!'";
 eval { $defref = $dict->define('biscuit', '!'); };
 if (!$@
     && defined($defref)
@@ -186,16 +144,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'!-biscuit'})
+    })
 {
-    print "ok 8\n";
+    is($string, $TESTDATA{'!-biscuit'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'!-biscuit'}, "\"\n";
-    print "not ok 8\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -204,6 +158,7 @@ else
 # by spaces), specifying all dicts ('*')
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "Test results for noun phrase, with dicts set to '*'";
 eval { $defref = $dict->define('antispasmodic agent', '*'); };
 if (!$@
     && defined($defref)
@@ -214,24 +169,21 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-antispasmodic_agent'})
+    })
 {
-    print "ok 9\n";
+    is($string, $TESTDATA{'*-antispasmodic_agent'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-antispasmodic_agent'}, "\"\n";
-    print "not ok 9\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
 # METHOD: define
-# get definition a soemthing containing an apostrophe ("ko'd")
+# get definition a something containing an apostrophe ("ko'd")
 # specifying all dicts ('*')
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "get definition for a word containing an apostrophe";
 eval { $defref = $dict->define("ko'd", '*'); };
 if (!$@
     && defined($defref)
@@ -242,16 +194,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-kod'})
+    })
 {
-    print "ok 10\n";
+    is($string, $TESTDATA{'*-kod'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-kod'}, "\"\n";
-    print "not ok 10\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -260,6 +208,7 @@ else
 # specifying all dicts ('*')
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "get definition of a noun phrase containing an apostrophe";
 eval { $defref = $dict->define("oboe d'amore", '*'); };
 if (!$@
     && defined($defref)
@@ -270,16 +219,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-oboe_damore'})
+    })
 {
-    print "ok 11\n";
+    is($string, $TESTDATA{'*-oboe_damore'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-oboe_damore'}, "\"\n";
-    print "not ok 11\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -287,6 +232,7 @@ else
 # Very long entry, which also happens to have multiple spaces
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "test getting definition for very long entry, with spaces";
 eval { $defref = $dict->define("Pityrogramma calomelanos aureoflava", '*'); };
 if (!$@
     && defined($defref)
@@ -297,16 +243,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'*-pityrogramma_calomelanos_aureoflava'})
+    })
 {
-    print "ok 12\n";
+    is($string, $TESTDATA{'*-pityrogramma_calomelanos_aureoflava'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'*-pityrogramma_calomelanos_aureoflava'}, "\"\n";
-    print "not ok 12\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -314,16 +256,8 @@ else
 # Valid word, invalid dbname - should return no entries
 #-----------------------------------------------------------------------
 eval { $defref = $dict->define('banana', 'web1651'); };
-if (!$@
-    && defined($defref)
-    && int(@{$defref}) == 0)
-{
-    print "ok 13\n";
-}
-else
-{
-    print "not ok 13\n";
-}
+ok(!$@ && defined($defref) && int(@{$defref}) == 0,
+   "valid word, invalid db name, should return 0 entries");
 
 #-----------------------------------------------------------------------
 # METHOD: define
@@ -333,6 +267,7 @@ else
 # get the definition for wn
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "search for a word, with DB passed to define()";
 $dict->setDicts('web1913');
 eval { $defref = $dict->define('banana', 'wn'); };
 if (!$@
@@ -344,16 +279,12 @@ if (!$@
             $string .= $entry->[1];
         }
         1;
-    }
-    && $string eq $TESTDATA{'wn-banana'})
+    })
 {
-    print "ok 14\n";
+    is($string, $TESTDATA{'wn-banana'}, $title);
 }
-else
-{
-    print STDERR "\nresult is \"$string\", expected \"",
-        $TESTDATA{'wn-banana'}, "\"\n";
-    print "not ok 14\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -362,16 +293,9 @@ else
 #-----------------------------------------------------------------------
 $WARNING = '';
 eval { $defref = $dict->define(undef, '*'); };
-if (!$@
-    && !defined($defref)
-    && $WARNING =~ /empty word passed to define/)
-{
-    print "ok 15\n";
-}
-else
-{
-    print "not ok 15\n";
-}
+ok(!$@ && !defined($defref)
+    && $WARNING =~ /empty word passed to define/,
+   "passing undef for the word should return undef");
 
 #-----------------------------------------------------------------------
 # METHOD: define
@@ -379,16 +303,10 @@ else
 #-----------------------------------------------------------------------
 $WARNING = '';
 eval { $defref = $dict->define('', '*'); };
-if (!$@
+ok(!$@
     && !defined($defref)
-    && $WARNING =~ /empty word passed to define/)
-{
-    print "ok 16\n";
-}
-else
-{
-    print "not ok 16\n";
-}
+    && $WARNING =~ /empty word passed to define/,
+   "passing an empty string returns undef");
 
 
 exit 0;

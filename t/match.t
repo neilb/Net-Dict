@@ -3,6 +3,7 @@
 # match.t - Net::Dict testsuite for match() method
 #
 
+use Test::More 0.88 tests => 15;
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -17,13 +18,11 @@ my $section;
 my $string;
 my $dbinfo;
 my %strathash;
+my $title;
 
-if (defined $VERBOSE && $VERBOSE==1)
-{
+if (defined $VERBOSE && $VERBOSE==1) {
     print STDERR "\nVERBOSE ON\n";
 }
-
-print "1..15\n";
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 
@@ -33,14 +32,12 @@ $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 #-----------------------------------------------------------------------
 while (<DATA>)
 {
-    if (/^==== END ====$/)
-    {
-	$section = undef;
-	next;
+    if (/^==== END ====$/) {
+        $section = undef;
+        next;
     }
 
-    if (/^==== (\S+) ====$/)
-    {
+    if (/^==== (\S+) ====$/) {
         $section = $1;
         $TESTDATA{$section} = '';
         next;
@@ -54,89 +51,52 @@ while (<DATA>)
 #-----------------------------------------------------------------------
 # Make sure we have HOST and PORT specified
 #-----------------------------------------------------------------------
-if (defined($TEST_HOST) && defined($TEST_PORT))
-{
-    print "ok 1\n";
-}
-else
-{
-    print "not ok 1\n";
-}
+ok(defined($TEST_HOST) && defined($TEST_PORT),
+   "Do we have a test HOST and PORT?");
 
 #-----------------------------------------------------------------------
 # connect to server
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new($TEST_HOST, Port => $TEST_PORT); };
-if (!$@ && defined $dict)
-{
-    print "ok 2\n";
-}
-else
-{
-    print "not ok 2\n";
-}
+ok(!$@ && defined($dict), "connect to DICT server");
 
 #-----------------------------------------------------------------------
 # call match() with no arguments - should die
 #-----------------------------------------------------------------------
 eval { $defref = $dict->match(); };
-if ($@ && $@ =~ /takes at least two arguments/)
-{
-    print "ok 3\n";
-}
-else
-{
-    print "not ok 3\n";
-}
+ok($@ && $@ =~ /takes at least two arguments/,
+   "calling match() with no arguments should croak()");
 
 #-----------------------------------------------------------------------
 # call match() with one arguments - should die
 #-----------------------------------------------------------------------
 eval { $defref = $dict->match('banana'); };
-if ($@ && $@ =~ /takes at least two arguments/)
-{
-    print "ok 4\n";
-}
-else
-{
-    print "not ok 4\n";
-}
+ok($@ && $@ =~ /takes at least two arguments/,
+   "match() with no argument should croak");
 
 #-----------------------------------------------------------------------
 # call match() with two arguments, but word is undef
 #-----------------------------------------------------------------------
 $WARNING = '';
 eval { $defref = $dict->match(undef, '*'); };
-if (!$@
-    && !defined($defref)
-    && $WARNING =~ /empty pattern passed to match/)
-{
-    print "ok 5\n";
-}
-else
-{
-    print "not ok 5\n";
-}
+ok(!$@ && !defined($defref)
+    && $WARNING =~ /empty pattern passed to match/,
+   "match() with 2 arguments, but word is undef, should return undef");
 
 #-----------------------------------------------------------------------
-# call match() with two arguments, but word is undef
+# call match() with two arguments, but word is empty string
 #-----------------------------------------------------------------------
 $WARNING = '';
 eval { $defref = $dict->match('', '*'); };
-if (!$@
+ok(!$@
     && !defined($defref)
-    && $WARNING =~ /empty pattern passed to match/)
-{
-    print "ok 6\n";
-}
-else
-{
-    print "not ok 6\n";
-}
+    && $WARNING =~ /empty pattern passed to match/,
+   "match() with 2 args but empty word should return undef");
 
 #-----------------------------------------------------------------------
 # get a list of supported strategies, render as string and compare
 #-----------------------------------------------------------------------
+$title  = "do we get the expected list of strategies";
 $string = '';
 eval { %strathash = $dict->strategies(); };
 if (!$@
@@ -147,21 +107,18 @@ if (!$@
             $string .= $s.':'.$strathash{$s}."\n";
         }
         1;
-    }
-    && $string eq $TESTDATA{'strats'})
+    })
 {
-    print "ok 7\n";
+    is($string, $TESTDATA{'strats'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 7\nexpected \"", $TESTDATA{'strats'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 7\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
 # same as previous test, but using obsolete method name
 #-----------------------------------------------------------------------
+$title  = "do we get the expected list of strats (back compat)";
 $string = '';
 eval { %strathash = $dict->strats(); };
 if (!$@
@@ -172,35 +129,28 @@ if (!$@
             $string .= $s.':'.$strathash{$s}."\n";
         }
         1;
-    }
-    && $string eq $TESTDATA{'strats'})
+    })
 {
-    print "ok 8\n";
+    is($string, $TESTDATA{'strats'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 8\nexpected \"", $TESTDATA{'strats'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 8\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
 # A list of words which start with "blue screen" - ie contains
 # a space.
 #-----------------------------------------------------------------------
+$title = "get a list of words starting with 'blue screen'";
 eval { $defref = $dict->match('blue screen', 'prefix', '*'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'*-prefix-blue_screen'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 9\n";
+    is($string, $TESTDATA{'*-prefix-blue_screen'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 9\nexpected \"", $TESTDATA{'*-prefix-blue_screen'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 9\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -208,20 +158,17 @@ else
 # We've previously specified a default dictionary of foldoc,
 # but we shouldn't get anything from that.
 #-----------------------------------------------------------------------
+$title = "list of words starting with 'blue ' in the jargon dict";
 $dict->setDicts('foldoc');
 eval { $defref = $dict->match('blue ', 'prefix', 'jargon'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'jargon-prefix-blue_'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 10\n";
+    is($string, $TESTDATA{'jargon-prefix-blue_'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 10\nexpected \"", $TESTDATA{'jargon-prefix-blue_'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 10\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -229,56 +176,49 @@ else
 # Now we do the same match, but without specifying a dictionary,
 # so it should fall back on the previously specified foldoc
 #-----------------------------------------------------------------------
+$title = "match words starting with 'blue '";
 $dict->setDicts('foldoc');
 eval { $defref = $dict->match('blue ', 'prefix'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'foldoc-prefix-blue_'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 11\n";
+    is($string, $TESTDATA{'foldoc-prefix-blue_'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 11\nexpected \"", $TESTDATA{'foldoc-prefix-blue_'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 11\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
 # METHOD: match
 # Look for words with apostrophe in them, in a specific dictionary
 #-----------------------------------------------------------------------
+$title = "use match() to look for words with an apostophe, in world95";
 eval { $defref = $dict->match("d'i", 're', 'world95'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{"world95-re-'"})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 12\n";
+    is($string, $TESTDATA{"world95-re-'"}, $title);
 }
-else
-{
-    print "not ok 12\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
 # METHOD: match
 # look for all words in all dictionaries ending in "standard"
 #-----------------------------------------------------------------------
+$title = "look for words ending in 'standard' in all DBs";
 eval { $defref = $dict->match("standard", 'suffix', '*'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'*-suffix-standard'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 13\n";
+    is($string, $TESTDATA{'*-suffix-standard'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 13\nexpected \"", $TESTDATA{'*-suffix-standard'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 13\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -286,20 +226,17 @@ else
 # Using regular expressions to find all entries in a dictionary
 # of a given length
 #-----------------------------------------------------------------------
+$title = "use regexp to find all entries of a given length";
 eval { $defref = $dict->match('^a....................$',
                               're', 'wn'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'web1913-re-dotmatch'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 14\n";
+    is($string, $TESTDATA{'web1913-re-dotmatch'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 14\nexpected \"", $TESTDATA{'web1913-re-dotmatch'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 14\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -307,19 +244,16 @@ else
 # Look for words which have a Levenshtein distance one
 # from "know"
 #-----------------------------------------------------------------------
+$title = "look for words with a Levenshtein distance one from 'know'";
 eval { $defref = $dict->match('know', 'lev', '*'); };
 if (!$@
     && defined $defref
-    && do { $string = _format_matches($defref); }
-    && $string eq $TESTDATA{'*-lev-know'})
+    && do { $string = _format_matches($defref); })
 {
-    print "ok 15\n";
+    is($string, $TESTDATA{'*-lev-know'}, $title);
 }
-else
-{
-    print STDERR "\nTEST 15\nexpected \"", $TESTDATA{'*-lev-know'},
-                 "\", got \n\"$string\"\n";
-    print "not ok 15\n";
+else {
+    fail($title);
 }
 
 

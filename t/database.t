@@ -3,6 +3,7 @@
 # database.t - Net::Dict testsuite for database related methods
 #
 
+use Test::More 0.88 tests => 13;
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -14,8 +15,7 @@ my %TESTDATA;
 my $section;
 my $string;
 my $dbinfo;
-
-print "1..13\n";
+my $title;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 
@@ -23,16 +23,13 @@ $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 # Build the hash of test data from after the __DATA__ symbol
 # at the end of this file
 #-----------------------------------------------------------------------
-while (<DATA>)
-{
-    if (/^==== END ====$/)
-    {
+while (<DATA>) {
+    if (/^==== END ====$/) {
         $section = undef;
         next;
     }
 
-    if (/^==== (\S+) ====$/)
-    {
+    if (/^==== (\S+) ====$/) {
         $section = $1;
         $TESTDATA{$section} = '';
         next;
@@ -46,57 +43,35 @@ while (<DATA>)
 #-----------------------------------------------------------------------
 # Make sure we have HOST and PORT specified
 #-----------------------------------------------------------------------
-if (defined($TEST_HOST) && defined($TEST_PORT))
-{
-    print "ok 1\n";
-}
-else
-{
-    print "not ok 1\n";
-}
+ok(defined($TEST_HOST) && defined($TEST_PORT),
+   "Do we have a test host and port?");
 
 #-----------------------------------------------------------------------
 # connect to server
 #-----------------------------------------------------------------------
 eval { $dict = Net::Dict->new($TEST_HOST, Port => $TEST_PORT); };
-if (!$@ && defined $dict)
-{
-    print "ok 2\n";
-}
-else
-{
-    print "not ok 2\n";
-}
+ok(!$@ && defined $dict, "Connect to DICT server");
 
 #-----------------------------------------------------------------------
 # call dbs() with an argument - it doesn't take any, and should die
 #-----------------------------------------------------------------------
 eval { %dbhash = $dict->dbs('foo'); };
-if ($@ && $@ =~ /takes no arguments/)
-{
-    print "ok 3\n";
-}
-else
-{
-    print "not ok 3\n";
-}
+ok($@ && $@ =~ /takes no arguments/, "dbs() with an argument should croak");
 
 #-----------------------------------------------------------------------
 # pass a hostname of empty string, should get undef back
 #-----------------------------------------------------------------------
 $string = '';
+$title  = "Check list of database names";
 eval { %dbhash = $dict->dbs(); };
 if (!$@
     && %dbhash
-    && do { foreach my $db (sort keys %dbhash) { $string .= "${db}:$dbhash{$db}\n"; }; 1; }
-    && $string eq $TESTDATA{dblist})
+    && do { foreach my $db (sort keys %dbhash) { $string .= "${db}:$dbhash{$db}\n"; }; 1; })
 {
-    print "ok 4\n";
+    is($string, $TESTDATA{dblist}, $title);
 }
-else
-{
-    print STDERR "TEST 4 failed\nExpected:\n$TESTDATA{dblist}\nBut got:\n$string\n";
-    print "not ok 4\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -104,60 +79,37 @@ else
 #-----------------------------------------------------------------------
 $dbinfo = undef;
 eval { $dbinfo = $dict->dbInfo(); };
-if ($@ && $@ =~ /one argument only/)
-{
-    print "ok 5\n";
-}
-else
-{
-    print "not ok 5\n";
-}
+ok($@ && $@ =~ /one argument only/, "dbInfo() with no arguments should croak");
 
 #-----------------------------------------------------------------------
 # call dbInfo() method with more than one argument
 #-----------------------------------------------------------------------
 $dbinfo = undef;
 eval { $dbinfo = $dict->dbInfo('wn', 'web1913'); };
-if ($@ && $@ =~ /one argument only/)
-{
-    print "ok 6\n";
-}
-else
-{
-    print "not ok 6\n";
-}
+ok($@ && $@ =~ /one argument only/, "dbInfo() with more than one argument should croak");
 
 #-----------------------------------------------------------------------
 # call dbInfo() method with one argument, but it's a non-existent DB
 #-----------------------------------------------------------------------
 $dbinfo = undef;
 eval { $dbinfo = $dict->dbInfo('web1651'); };
-if (!$@ && !defined($dbinfo))
-{
-    print "ok 7\n";
-}
-else
-{
-    print STDERR "DBINFO: $dbinfo\n" if defined $dbinfo;
-    print "not ok 7\n";
-}
+ok(!$@ && !defined($dbinfo), "dbInfo() on a non-existent DB should return undef");
 
 #-----------------------------------------------------------------------
 # get the database info for the wordnet db, and compare with expected
 #-----------------------------------------------------------------------
 $string = '';
 $dbinfo = undef;
+$title  = "Do we get expected DB info for wordnet?";
 eval { $dbinfo = $dict->dbInfo('wn'); };
 if (!$@
     && defined($dbinfo)
     && $dbinfo eq $TESTDATA{'dbinfo-wn'})
 {
-    print "ok 8\n";
+    is($dbinfo, $TESTDATA{'dbinfo-wn'}, $title);
 }
-else
-{
-    print STDERR "TEST 8 failed\nExpected:\n$TESTDATA{'dbinfo-wn'}\nBut got:\n--------\n$dbinfo\n--------\n";
-    print "not ok 8\n";
+else {
+    fail($title);
 }
 
 #-----------------------------------------------------------------------
@@ -165,28 +117,14 @@ else
 # Call method with no arguments - should result in die()
 #-----------------------------------------------------------------------
 eval { $string = $dict->dbTitle(); };
-if ($@ && $@ =~ /method expects one argument/)
-{
-    print "ok 9\n";
-}
-else
-{
-    print "not ok 9\n";
-}
+ok($@ && $@ =~ /method expects one argument/, "dbTitle() with no arguments should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: dbTitle
 # Call method with too many arguments - should result in die()
 #-----------------------------------------------------------------------
 eval { $string = $dict->dbTitle('wn', 'foldoc'); };
-if ($@ && $@ =~ /method expects one argument/)
-{
-    print "ok 10\n";
-}
-else
-{
-    print "not ok 10\n";
-}
+ok($@ && $@ =~ /method expects one argument/, "dbTitle() with more than one argument should croak");
 
 #-----------------------------------------------------------------------
 # METHOD: dbTitle
@@ -194,16 +132,7 @@ else
 #-----------------------------------------------------------------------
 $WARNING = '';
 eval { $string = $dict->dbTitle('web1651'); };
-if (!$@
-    && !defined($string)
-    && $WARNING eq '')
-{
-    print "ok 11\n";
-}
-else
-{
-    print "not ok 11\n";
-}
+ok(!$@ && !defined($string), "dbTitle() on a non-existent DB should return undef");
 
 #-----------------------------------------------------------------------
 # METHOD: dbTitle
@@ -217,34 +146,21 @@ Net::Dict->debug(0);
 $dict->debug(1);
 $WARNING = '';
 eval { $string = $dict->dbTitle('web1651'); };
-if (!$@
-    && !defined($string)
-    && $WARNING =~ /unknown database/)
-{
-    print "ok 12\n";
-}
-else
-{
-    print "not ok 12\n";
-}
+ok(!$@ && !defined($string) && $WARNING =~ /unknown database/,
+   "dbTitle on a non-existent database name should return undef");
 $dict->debug(0);
 
 #-----------------------------------------------------------------------
 # METHOD: dbTitle
 # Call method with an OK DB name
 #-----------------------------------------------------------------------
+$title = "check dbTitle() on wordnet";
 eval { $string = $dict->dbTitle('wn'); };
-if (!$@
-    && defined($string)
-    && $string."\n" eq $TESTDATA{'dbtitle-wn'})
-{
-    print "ok 13\n";
+if (!$@ && defined($string)) {
+    is($string."\n", $TESTDATA{'dbtitle-wn'}, $title);
 }
-else
-{
-    print STDERR "\ngot back \"$string\"\nwas expexting \"",
-        $TESTDATA{'dbtitle-wn'}, "\"\n";
-    print "not ok 13\n";
+else {
+    fail($title);
 }
 
 exit 0;

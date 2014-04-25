@@ -1,5 +1,8 @@
 Revision history for Perl module Net::Dict
 
+2.17 2014-04-25
+    - Converted all remaining tests to use Test::More
+
 2.16 2014-04-20
     - Test server config in Net::Dict::TestConfig in t/lib.
       We no longer prompt for test config -- it hasn't changed in years.
