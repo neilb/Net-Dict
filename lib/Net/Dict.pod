@@ -8,7 +8,7 @@ Net::Dict - client API for accessing dictionary servers (RFC 2229)
     use Net::Dict;
     
     $dict = Net::Dict->new('dict.server.host');
-    $h = $dict->define("word");
+    $h    = $dict->define("word");
     foreach $i (@{$h}) {
         ($db, $def) = @{$i};
 	. . .
@@ -50,12 +50,12 @@ and the title is I<Webster's Revised Unabridged Dictionary (1913)>.
 
 To look up definitions for a word, you use the C<define> method:
 
-    $dref = $dict->define('banana');
+ $dref = $dict->define('banana');
 
 This returns a reference to a list; each entry in the list
 is a reference to a two item list:
 
-    [ $dbname, $definition ]
+ [ $dbname, $definition ]
 
 The first entry is a I<database name> as introduced above.
 The second entry is the text of a definition from
@@ -71,11 +71,10 @@ which can be used to match words against a pattern.
 For example, using B<prefix> strategy with a pattern "anti"
 would find all words in databases which start with "anti":
 
-    @mref = $dict->match('anti', 'prefix');
-    foreach my $match (@{ $mref })
-    {
-        ($db, $word) = @{ $match };
-    }
+ @mref = $dict->match('anti', 'prefix');
+ foreach my $match (@{ $mref }) {
+     ($db, $word) = @{ $match };
+ }
 
 Similarly the B<suffix> strategy is used to search for words
 which end in a given pattern.
@@ -89,19 +88,19 @@ This is specified with a special database name of C<*>.
 You can specify the database(s) to search explicitly,
 as additional arguments to the B<define> and B<match> methods:
 
-    $dref = $dict->define('banana', 'wn', 'web1913');
+ $dref = $dict->define('banana', 'wn', 'web1913');
 
 Rather than specify the databases to use every time,
 you can change the default from '*' using the C<setDicts> method:
 
-    $dict->setDicts('wn', 'web1913');
+ $dict->setDicts('wn', 'web1913');
 
 Any subsequent calls to B<define> or B<match> will refer to these databases,
 unless over-ridden with additional arguments to the method.
 You can find out what databases are available on a server
 using the C<dbs> method:
 
-    %dbhash = $dict->dbs();
+ %dbhash = $dict->dbs();
 
 Each entry in the returned hash has the name of a database as the key,
 and the corresponding title as the value.
@@ -112,7 +111,7 @@ found, no further databases should be searched.
 
 =head1 CONSTRUCTOR
 
-    $dict = Net::Dict->new (HOST [,OPTIONS]);
+ $dict = Net::Dict->new (HOST [,OPTIONS]);
 
 This is the constructor for a new Net::Dict object. C<HOST> is the
 name of the remote host on which a Dict server is running.
@@ -158,11 +157,11 @@ More on the debug method can be found in L<Net::Cmd>.
 Making everything explicit, here's how you might call
 the constructor in your client:
 
-    $dict = Net::Dict->new($HOST,
-                           Port    => 2628,
-                           Client  => "myclient v$VERSION",
-                           Timeout => 120,
-                           Debug   => 0);
+ $dict = Net::Dict->new($HOST,
+                        Port    => 2628,
+                        Client  => "myclient v$VERSION",
+                        Timeout => 120,
+                        Debug   => 0);
 
 This will return C<undef> if we failed to make the connection.
 It will C<die> if bad arguments are passed: no hostname,
@@ -198,12 +197,11 @@ on the DICT server.
 The keys are the short names, or identifiers, of the databases;
 the value is title of the database:
 
-    %dbhash = $dict->dbs();
-    print "Available dictionaries:\n";
-    while (($db, $title) = each %dbhash)
-    {
-        print "$db : $title\n";
-    }
+ %dbhash = $dict->dbs();
+ print "Available dictionaries:\n";
+ while (($db, $title) = each %dbhash) {
+     print "$db : $title\n";
+ }
 
 This is the C<SHOW DATABASES> command from RFC 2229.
 
@@ -243,19 +241,19 @@ is a shared secret known only to the server and the user.
 For example, if you were using dictd from dict.org,
 your configuration file might include the following:
 
-    database private {
-        data "/usr/local/dictd/db/private.dict.dz"
-        index "/usr/local/dictd/db/private.index"
-        access { user connor }
-    }
+ database private {
+     data  "/usr/local/dictd/db/private.dict.dz"
+     index "/usr/local/dictd/db/private.index"
+     access { user connor }
+ }
 
-    user connor "there can be only one"
+ user connor "there can be only one"
 
 To be able to access this database, you'd write
 something like the following:
 
-    $dict = Net::Dict->new('dict.foobar.com');
-    $dict->auth('connor', 'there can be only one');
+ $dict = Net::Dict->new('dict.foobar.com');
+ $dict->auth('connor', 'there can be only one');
 
 A subsequent call to the C<databases> method would
 reveal the C<private> database now accessible.
@@ -269,8 +267,8 @@ described below.
 Returns a string, containing the information about the server,
 provided by the server:
 
-    print "Server Info:\n";
-    print $dict->serverInfo(), "\n";
+ print "Server Info:\n";
+ print $dict->serverInfo(), "\n";
 
 This is the C<SHOW SERVER> command from RFC 2229.
 
@@ -291,9 +289,9 @@ as described on pages 7 and 8 of RFC 2229.
 Returns true (non-zero) if the DICT server supports the
 specified capability; false (zero) otherwise. Eg
 
-    if ($dict->has_capability('auth')) {
-        $dict->auth('genie', 'open sesame');
-    }
+ if ($dict->has_capability('auth')) {
+     $dict->auth('genie', 'open sesame');
+ }
 
 =head2 status
 
@@ -318,7 +316,7 @@ Suggested by Aleksey Cheusov.
 
 The following DICT commands are not currently supported:
 
-    OPTION MIME
+ OPTION MIME
 
 =item *
 
