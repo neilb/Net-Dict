@@ -4,6 +4,8 @@ Revision history for Perl module Net::Dict
     - Converted all remaining tests to use Test::More
     - Tidied up SEE ALSO, including fixing of broken links
     - Tidied up code snippets in the doc
+    - Reformatted code according to my current conventions,
+      and got rid of a few rogue tab characters
 
 2.16 2014-04-20
     - Test server config in Net::Dict::TestConfig in t/lib.

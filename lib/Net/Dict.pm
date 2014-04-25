@@ -61,15 +61,14 @@ sub new
     # Process arguments, setting defaults if needed
     #-------------------------------------------------------------------
     $argref = {};
-    foreach my $arg (keys %ARG_DEFAULT)
-    {
+    foreach my $arg (keys %ARG_DEFAULT) {
         $argref->{$arg} = exists $inargs{$arg}
                           ? $inargs{$arg}
                           : $ARG_DEFAULT{$arg};
         delete $inargs{$arg};
     }
-    if (keys(%inargs) > 0)
-    {
+
+    if (keys(%inargs) > 0) {
         croak "Net::Dict->new(): unknown argument - ",
             join(', ', keys %inargs);
     }
@@ -83,16 +82,14 @@ sub new
                                Timeout  => $argref->{Timeout}
                                );
 
-    return undef
-	unless defined $self;
+    return undef unless defined $self;
 
     ${*$self}{'net_dict_host'} = $host;
 
     $self->autoflush(1);
     $self->debug($argref->{Debug});
 
-    if ($self->response() != CMD_OK)
-    {
+    if ($self->response() != CMD_OK) {
         $self->close();
         return undef;
     }
@@ -118,7 +115,6 @@ sub dbs
     @_ == 1 or croak 'usage: $dict->dbs() - takes no arguments';
     my $self = shift;
 
-
     $self->_get_database_list();
     return %{${*$self}{'net_dict_dbs'}};
 }
@@ -135,8 +131,8 @@ sub serverInfo
     @_ == 1 or croak 'usage: $dict->serverInfo()';
     my $self = shift;
 
-    return 0
-        unless $self->_SHOW_SERVER();
+    return 0 unless $self->_SHOW_SERVER();
+
     my $info = join('', @{$self->read_until_dot});
     $self->getline();
     $info;
@@ -147,12 +143,10 @@ sub dbInfo
     @_ == 2 or croak 'usage: $dict->dbInfo($dbname) - one argument only';
     my $self = shift;
 
-    if ($self->_SHOW_INFO(@_))
-    {
+    if ($self->_SHOW_INFO(@_)) {
         return join('', @{$self->read_until_dot()});
     }
-    else
-    {
+    else {
         return undef;
     }
 }
@@ -165,12 +159,10 @@ sub dbTitle
 
 
     $self->_get_database_list();
-    if (exists ${${*$self}{'net_dict_dbs'}}{$dbname})
-    {
+    if (exists ${${*$self}{'net_dict_dbs'}}{$dbname}) {
         return ${${*$self}{'net_dict_dbs'}}{$dbname};
     }
-    else
-    {
+    else {
         carp 'dbTitle(): unknown database name' if $self->debug;
         return undef;
     }
@@ -180,11 +172,11 @@ sub strategies
 {
     @_ == 1 or croak 'usage: $dict->strategies()';
     my $self = shift;
-    return 0
-        unless $self->_SHOW_STRAT();
-    my(%strats, $name, $desc);
-    foreach (@{$self->read_until_dot()})
-    {
+
+    return 0 unless $self->_SHOW_STRAT();
+
+    my (%strats, $name, $desc);
+    foreach (@{$self->read_until_dot()}) {
         ($name, $desc) = (split /\s/, $_, 2);
         chomp $desc;
         $strats{$name} = _unquote($desc);
@@ -207,20 +199,17 @@ sub define
     #-------------------------------------------------------------------
     # check whether we got an empty word
     #-------------------------------------------------------------------
-    if (!defined($word) || $word eq '')
-    {
+    if (!defined($word) || $word eq '') {
         carp "empty word passed to define() method";
         return undef;
     }
 
-    foreach $db (@dbs)
-    {
-        next
-            unless $self->_DEFINE($db, $word);
+    foreach $db (@dbs) {
+        next unless $self->_DEFINE($db, $word);
 
         my ($defNum) = ($self->message =~ /^\d{3} (\d+) /);
-        foreach (0..$defNum-1)
-        {
+
+        foreach (0..$defNum-1) {
             my ($d) = ($self->getline =~ /^\d{3} ".*" ([-\w]+) /);
             my ($def) = join '', @{$self->read_until_dot};
             push @defs, [$d, $def];
@@ -244,14 +233,12 @@ sub match
     #-------------------------------------------------------------------
     # check whether we got an empty pattern
     #-------------------------------------------------------------------
-    if (!defined($word) || $word eq '')
-    {
+    if (!defined($word) || $word eq '') {
         carp "empty pattern passed to match() method";
         return undef;
     }
 
-    foreach $db (@dbs)
-    {
+    foreach $db (@dbs) {
         next unless $self->_MATCH($db, $strat, $word);
 
         my ($db, $w);
@@ -280,8 +267,7 @@ sub auth
     $string = $self->msg_id().$pass_phrase;
     $auth_string = Digest::MD5::md5_hex($string);
 
-    if ($self->_AUTH($user, $auth_string))
-    {
+    if ($self->_AUTH($user, $auth_string)) {
         #---------------------------------------------------------------
         # clear the cache of database names
         # next time a method needs them, this will cause us to go
@@ -289,8 +275,7 @@ sub auth
         #---------------------------------------------------------------
         delete ${*$self}{'net_dict_dbs'};
     }
-    else
-    {
+    else {
         carp "auth() failed with error code ".$self->code() if $self->debug();
         return;
     }
@@ -376,8 +361,7 @@ sub response
     my $str = $self->getline() || return undef;
 
 
-    if ($self->debug)
-    {
+    if ($self->debug) {
         $self->debug_print(0,$str);
     }
 
@@ -402,8 +386,7 @@ sub _unquote
     my $string = shift;
 
 
-    if ($string =~ /^"/)
-    {
+    if ($string =~ /^"/) {
         $string =~ s/^"//;
         $string =~ s/"$//;
     }
@@ -431,17 +414,14 @@ sub _parse_banner
 
     ${*$self}{'net_dict_banner'} = $banner;
     ${*$self}{'net_dict_capabilities'} = [];
-    if ($banner =~ /^(\d{3}) (.*) (<[^<>]*>)?\s+(<[^<>]+>)\s*$/)
-    {
+    if ($banner =~ /^(\d{3}) (.*) (<[^<>]*>)?\s+(<[^<>]+>)\s*$/) {
         ${*$self}{'net_dict_msgid'} = $4;
         ($capstring = $3) =~ s/[<>]//g;
-        if (length($capstring) > 0)
-        {
+        if (length($capstring) > 0) {
             ${*$self}{'net_dict_capabilities'} = [split(/\./, $capstring)];
         }
     }
-    else
-    {
+    else {
         carp "unexpected format for welcome banner on connection:\n",
              $banner if $self->debug;
     }
@@ -467,20 +447,20 @@ sub _get_database_list
 
     return if exists ${*$self}{'net_dict_dbs'};
 
-    if ($self->_SHOW_DB)
-    {
-	my($dbNum)= ($self->message =~ /^\d{3} (\d+)/);
-	my($name, $descr);
- 	foreach (0..$dbNum-1)
-        {
+    if ($self->_SHOW_DB) {
+        my ($dbNum) = ($self->message =~ /^\d{3} (\d+)/);
+        my ($name, $descr);
+
+        foreach (0..$dbNum-1) {
             ($name, $descr) = (split /\s/, $self->getline, 2);
             chomp $descr;
             ${${*$self}{'net_dict_dbs'}}{$name} = _unquote($descr);
-	}
-	# Is there a way to do it right? Reading the dot line and the
-	# status line afterwards? Maybe I should use read_until_dot?
-	$self->getline();
-	$self->getline();
+        }
+
+        # Is there a way to do it right? Reading the dot line and the
+        # status line afterwards? Maybe I should use read_until_dot?
+        $self->getline();
+        $self->getline();
     }
 }
 
