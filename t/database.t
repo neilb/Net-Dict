@@ -4,6 +4,7 @@
 #
 
 use Test::More 0.88 tests => 13;
+use Test::Differences qw/ eq_or_diff /;
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -68,7 +69,7 @@ if (!$@
     && %dbhash
     && do { foreach my $db (sort keys %dbhash) { $string .= "${db}:$dbhash{$db}\n"; }; 1; })
 {
-    is($string, $TESTDATA{dblist}, $title);
+    eq_or_diff($string, $TESTDATA{dblist}, $title);
 }
 else {
     fail($title);
@@ -103,10 +104,9 @@ $dbinfo = undef;
 $title  = "Do we get expected DB info for wordnet?";
 eval { $dbinfo = $dict->dbInfo('wn'); };
 if (!$@
-    && defined($dbinfo)
-    && $dbinfo eq $TESTDATA{'dbinfo-wn'})
+    && defined($dbinfo))
 {
-    is($dbinfo, $TESTDATA{'dbinfo-wn'}, $title);
+    eq_or_diff($dbinfo, $TESTDATA{'dbinfo-wn'}, $title);
 }
 else {
     fail($title);
@@ -157,7 +157,7 @@ $dict->debug(0);
 $title = "check dbTitle() on wordnet";
 eval { $string = $dict->dbTitle('wn'); };
 if (!$@ && defined($string)) {
-    is($string."\n", $TESTDATA{'dbtitle-wn'}, $title);
+    eq_or_diff($string."\n", $TESTDATA{'dbtitle-wn'}, $title);
 }
 else {
     fail($title);
@@ -167,87 +167,85 @@ exit 0;
 
 __DATA__
 ==== dblist ====
-afr-deu:Afrikaans-German Freedict dictionary
 all:All Dictionaries (English-Only and Translating)
-ara-eng:Arabic-English FreeDict Dictionary
 bouvier:Bouvier's Law Dictionary, Revised 6th Ed (1856)
-cro-eng:Croatian-English Freedict Dictionary
-cze-eng:Czech-English Freedict dictionary
-dan-eng:Danish-English Freedict dictionary
-deu-eng:German-English Freedict dictionary
-deu-fra:German-French Freedict dictionary
-deu-ita:German-Italian Freedict dictionary
-deu-nld:German-Dutch Freedict dictionary
-deu-por:German-Portuguese Freedict dictionary
 devil:The Devil's Dictionary (1881-1906)
 easton:Easton's 1897 Bible Dictionary
 elements:The Elements (07Nov00)
-eng-ara:English-Arabic FreeDict Dictionary
-eng-cro:English-Croatian Freedict Dictionary
-eng-cze:English-Czech fdicts/FreeDict Dictionary
-eng-deu:English-German Freedict dictionary
-eng-fra:English-French Freedict dictionary
-eng-hin:English-Hindi Freedict Dictionary
-eng-hun:unknown
-eng-iri:English-Irish Freedict dictionary
-eng-ita:English-Italian Freedict dictionary
-eng-lat:English-Latin Freedict dictionary
-eng-nld:English-Dutch Freedict dictionary
-eng-por:English-Portuguese Freedict dictionary
-eng-rom:English-Romanian FreeDict dictionary
-eng-rus:English-Russian Freedict dictionary
-eng-scr:English-Serbo-Croat Freedict dictionary
-eng-spa:English-Spanish Freedict dictionary
-eng-swa:English-Swahili xFried/FreeDict Dictionary
-eng-swe:English-Swedish Freedict dictionary
-eng-tur:English-Turkish FreeDict Dictionary
-eng-wel:English-Welsh Freedict dictionary
 english:English Monolingual Dictionaries
-foldoc:The Free On-line Dictionary of Computing (26 July 2010)
-fra-deu:French-German Freedict dictionary
-fra-eng:French-English Freedict dictionary
-fra-nld:French-Dutch Freedict dictionary
+fd-afr-deu:Afrikaans-German FreeDict Dictionary ver. 0.3
+fd-cro-eng:Croatian-English Freedict Dictionary
+fd-cze-eng:Czech-English Freedict dictionary
+fd-dan-eng:Danish-English FreeDict Dictionary ver. 0.2.1
+fd-deu-eng:German-English FreeDict Dictionary ver. 0.3.3
+fd-deu-fra:German-French FreeDict Dictionary ver. 0.3.1
+fd-deu-ita:German-Italian FreeDict Dictionary ver. 0.1.1
+fd-deu-nld:German-Dutch FreeDict Dictionary ver. 0.1.1
+fd-deu-por:German-Portuguese FreeDict Dictionary ver. 0.2.1
+fd-eng-ara:English-Arabic FreeDict Dictionary ver. 0.6.2
+fd-eng-cro:English-Croatian Freedict Dictionary
+fd-eng-cze:English-Czech fdicts/FreeDict Dictionary
+fd-eng-deu:English-German FreeDict Dictionary ver. 0.3.5
+fd-eng-fra:English-French FreeDict Dictionary ver. 0.1.4
+fd-eng-hin:English-Hindi FreeDict Dictionary ver. 1.5.1
+fd-eng-hun:English-Hungarian FreeDict Dictionary ver. 0.1
+fd-eng-iri:English-Irish Freedict dictionary
+fd-eng-ita:English-Italian FreeDict Dictionary ver. 0.1.1
+fd-eng-lat:English-Latin FreeDict Dictionary ver. 0.1.1
+fd-eng-nld:English-Dutch FreeDict Dictionary ver. 0.1.1
+fd-eng-por:English-Portuguese FreeDict Dictionary ver. 0.2.2
+fd-eng-rom:English-Romanian FreeDict Dictionary ver. 0.6.1
+fd-eng-rus:English-Russian FreeDict Dictionary ver. 0.3
+fd-eng-scr:English-Serbo-Croat Freedict dictionary
+fd-eng-spa:English-Spanish FreeDict Dictionary ver. 0.2.1
+fd-eng-swa:English-Swahili xFried/FreeDict Dictionary
+fd-eng-swe:English-Swedish FreeDict Dictionary ver. 0.1.1
+fd-eng-tur:English-Turkish FreeDict Dictionary ver. 0.2.1
+fd-eng-wel:English-Welsh Freedict dictionary
+fd-fra-deu:French-German FreeDict Dictionary ver. 0.1.1
+fd-fra-eng:French-English FreeDict Dictionary ver. 0.3.4
+fd-fra-nld:French-Dutch FreeDict Dictionary ver. 0.1.2
+fd-gla-deu:Scottish Gaelic-German FreeDict Dictionary ver. 0.1.1
+fd-hin-eng:English-Hindi Freedict Dictionary [reverse index]
+fd-hun-eng:Hungarian-English FreeDict Dictionary ver. 0.3
+fd-iri-eng:Irish-English Freedict dictionary
+fd-ita-deu:Italian-German FreeDict Dictionary ver. 0.1.1
+fd-ita-eng:Italian-English FreeDict Dictionary ver. 0.1.1
+fd-jpn-deu:Japanese-German FreeDict Dictionary ver. 0.1.1
+fd-lat-deu:Latin - German FreeDict dictionary ver. 0.4
+fd-lat-eng:Latin-English FreeDict Dictionary ver. 0.1.1
+fd-nld-deu:Dutch-German FreeDict Dictionary ver. 0.1.1
+fd-nld-eng:Dutch-English Freedict Dictionary ver. 0.1.3
+fd-nld-fra:Nederlands-French FreeDict Dictionary ver. 0.1.1
+fd-por-deu:Portuguese-German FreeDict Dictionary ver. 0.1.1
+fd-por-eng:Portuguese-English FreeDict Dictionary ver. 0.1.1
+fd-scr-eng:Serbo-Croat-English Freedict dictionary
+fd-slo-eng:Slovak-English Freedict dictionary
+fd-spa-eng:Spanish-English FreeDict Dictionary ver. 0.1.1
+fd-swa-eng:Swahili-English xFried/FreeDict Dictionary
+fd-swe-eng:Swedish-English FreeDict Dictionary ver. 0.1.1
+fd-tur-deu:Turkish-German FreeDict Dictionary ver. 0.1.1
+fd-tur-eng:Turkish-English FreeDict Dictionary ver. 0.2.1
+fd-wel-eng:Welsh-English Freedict dictionary
+foldoc:The Free On-line Dictionary of Computing (18 May 2012)
 gaz2k-counties:U.S. Gazetteer Counties (2000)
 gaz2k-places:U.S. Gazetteer Places (2000)
 gaz2k-zips:U.S. Gazetteer Zip Code Tabulation Areas (2000)
 gcide:The Collaborative International Dictionary of English v.0.48
-gla-deu:Scottish Gaelic-German Freedict dictionary
-hin-eng:English-Hindi Freedict Dictionary [reverse index]
 hitchcock:Hitchcock's Bible Names Dictionary (late 1800's)
-hun-eng:unknown
-iri-eng:Irish-English Freedict dictionary
-ita-deu:Italian-German Freedict dictionary
-ita-eng:Italian-English Freedict dictionary
 jargon:The Jargon File (version 4.4.7, 29 Dec 2003)
-jpn-deu:Japanese-German Freedict dictionary
-lat-deu:Latin-German Freedict dictionary
-lat-eng:Latin-English Freedict dictionary
-moby-thes:Moby Thesaurus II by Grady Ward, 1.0
-nld-deu:Dutch-German Freedict dictionary
-nld-eng:Dutch-English Freedict dictionary
-nld-fra:Dutch-French Freedict dictionary
-por-deu:Portuguese-German Freedict dictionary
-por-eng:Portuguese-English Freedict dictionary
-scr-eng:Serbo-Croat-English Freedict dictionary
-slo-eng:Slovak-English Freedict dictionary
-spa-eng:Spanish-English Freedict dictionary
-swa-eng:Swahili-English xFried/FreeDict Dictionary
-swe-eng:Swedish-English Freedict dictionary
+moby-thesaurus:Moby Thesaurus II by Grady Ward, 1.0
 trans:Translating Dictionaries
-tur-deu:Turkish-German Freedict dictionary
-tur-eng:English-Turkish FreeDict Dictionary [reverse index]
-vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms (June 2006)
-wel-eng:Welsh-English Freedict dictionary
+vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms (January 2014)
 wn:WordNet (r) 3.0 (2006)
 world02:CIA World Factbook 2002
-world95:The CIA World Factbook (1995)
 ==== dbtitle-wn ====
 WordNet (r) 3.0 (2006)
 ==== dbinfo-wn ====
 ============ wn ============
 00-database-info
 This file was converted from the original database on:
-          2010-10-06T15:55:24
+          2014-04-17T12:33:52
 
 The original data is available from:
      ftp://ftp.cogsci.princeton.edu/pub/wordnet/2.0

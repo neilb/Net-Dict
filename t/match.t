@@ -4,6 +4,7 @@
 #
 
 use Test::More 0.88 tests => 15;
+use Test::Differences qw/ eq_or_diff /;
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -109,7 +110,7 @@ if (!$@
         1;
     })
 {
-    is($string, $TESTDATA{'strats'}, $title);
+    eq_or_diff($string, $TESTDATA{'strats'}, $title);
 }
 else {
     fail($title);
@@ -131,7 +132,7 @@ if (!$@
         1;
     })
 {
-    is($string, $TESTDATA{'strats'}, $title);
+    eq_or_diff($string, $TESTDATA{'strats'}, $title);
 }
 else {
     fail($title);
@@ -147,7 +148,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'*-prefix-blue_screen'}, $title);
+    eq_or_diff($string, $TESTDATA{'*-prefix-blue_screen'}, $title);
 }
 else {
     fail($title);
@@ -165,7 +166,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'jargon-prefix-blue_'}, $title);
+    eq_or_diff($string, $TESTDATA{'jargon-prefix-blue_'}, $title);
 }
 else {
     fail($title);
@@ -183,7 +184,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'foldoc-prefix-blue_'}, $title);
+    eq_or_diff($string, $TESTDATA{'foldoc-prefix-blue_'}, $title);
 }
 else {
     fail($title);
@@ -193,13 +194,13 @@ else {
 # METHOD: match
 # Look for words with apostrophe in them, in a specific dictionary
 #-----------------------------------------------------------------------
-$title = "use match() to look for words with an apostophe, in world95";
-eval { $defref = $dict->match("d'i", 're', 'world95'); };
+$title = "use match() to look for words with an apostophe, in world02";
+eval { $defref = $dict->match("d'i", 're', 'world02'); };
 if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{"world95-re-'"}, $title);
+    eq_or_diff($string, $TESTDATA{"world02-re-'"}, $title);
 }
 else {
     fail($title);
@@ -215,7 +216,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'*-suffix-standard'}, $title);
+    eq_or_diff($string, $TESTDATA{'*-suffix-standard'}, $title);
 }
 else {
     fail($title);
@@ -233,7 +234,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'web1913-re-dotmatch'}, $title);
+    eq_or_diff($string, $TESTDATA{'web1913-re-dotmatch'}, $title);
 }
 else {
     fail($title);
@@ -250,7 +251,7 @@ if (!$@
     && defined $defref
     && do { $string = _format_matches($defref); })
 {
-    is($string, $TESTDATA{'*-lev-know'}, $title);
+    eq_or_diff($string, $TESTDATA{'*-lev-know'}, $title);
 }
 else {
     fail($title);
@@ -327,8 +328,8 @@ foldoc:blue screen of death
 foldoc:blue screen of life
 foldoc:blue sky software
 foldoc:blue wire
-==== world95-re-' ====
-world95:Cote D'ivoire
+==== world02-re-' ====
+world02:Cote d'Ivoire
 ==== *-suffix-standard ====
 bouvier:STANDARD
 foldoc:a tools integration standard
@@ -346,6 +347,7 @@ foldoc:object compatibility standard
 foldoc:recommended standard
 foldoc:robot exclusion standard
 foldoc:standard
+foldoc:video display standard
 gaz2k-places:Standard
 gcide:deficient inferior substandard
 gcide:Double standard
@@ -355,7 +357,7 @@ gcide:nonstandard
 gcide:standard
 gcide:Standard
 jargon:ansi standard
-moby-thes:standard
+moby-thesaurus:standard
 wn:accounting standard
 wn:double standard
 wn:gold standard
@@ -521,10 +523,10 @@ gcide:Known
 gcide:Now
 gcide:Snow
 gcide:Ynow
-moby-thes:knob
-moby-thes:knot
-moby-thes:now
-moby-thes:snow
+moby-thesaurus:knob
+moby-thesaurus:knot
+moby-thesaurus:now
+moby-thesaurus:snow
 vera:now
 wn:knob
 wn:knot

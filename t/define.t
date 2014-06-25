@@ -345,7 +345,7 @@ Biscuit \Bis"cuit\, n. [F. biscuit (cf. It. biscotto, Sp.
       matters extracted from meat by boiling, or of meat ground
       fine and combined with flour, so as to form biscuits.
       [1913 Webster]
-moby-thes
+moby-thesaurus
 52 Moby Thesaurus words for "biscuit":
    Brussels biscuit, Melba toast, adobe, bisque, bone, bowl, brick,
    brownie, cement, ceramic ware, ceramics, china, cookie, cracker,

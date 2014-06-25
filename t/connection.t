@@ -7,6 +7,7 @@ use strict;
 $^W = 1;
 
 use Test::More 0.88 tests => 17;
+use Test::Differences qw/ eq_or_diff /;
 
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -109,7 +110,7 @@ if (exists $TESTDATA{serverinfo}
     && do { $serverinfo =~ s/^On pan\.alephnull\.com.*?[\n\r]+//s}
    )
 {
-    is($serverinfo, $TESTDATA{serverinfo}, $description);
+    eq_or_diff($serverinfo, $TESTDATA{serverinfo}, $description);
 }
 else {
     fail($description);
@@ -151,7 +152,7 @@ if ($dict->can('capabilities')
     && do { $string = join(':', sort(@caps)); 1;}
    )
 {
-    is($string."\n", $TESTDATA{'capabilities'}, $description);
+    eq_or_diff($string."\n", $TESTDATA{'capabilities'}, $description);
 }
 else {
     fail($description);
@@ -215,11 +216,11 @@ __DATA__
 Database      Headwords         Index          Data  Uncompressed
 gcide              203645       3859 kB         12 MB         38 MB
 wn                 147311       3002 kB       9247 kB         29 MB
-moby-thes           30263        528 kB         10 MB         28 MB
+moby-thesaurus      30263        528 kB         10 MB         28 MB
 elements              142          2 kB         17 kB         53 kB
-vera                11028        124 kB        195 kB        651 kB
-jargon               2314         40 kB        565 kB       1346 kB
-foldoc              14861        294 kB       2172 kB       5314 kB
+vera                11877        135 kB        222 kB        735 kB
+jargon               2314         40 kB        577 kB       1432 kB
+foldoc              14908        295 kB       2179 kB       5332 kB
 easton               3968         64 kB       1077 kB       2648 kB
 hitchcock            2619         34 kB         33 kB         85 kB
 bouvier              6797        128 kB       2338 kB       6185 kB
@@ -229,62 +230,60 @@ gaz2k-counties      12875        269 kB        280 kB       1502 kB
 gaz2k-places        51361       1006 kB       1711 kB         13 MB
 gaz2k-zips          33249        454 kB       2122 kB         15 MB
 --exit--                0          0 kB          0 kB          0 kB
-eng-swe              5489         76 kB         77 kB        204 kB
-nld-eng             22752        377 kB        354 kB       1009 kB
-eng-cze            150010       2482 kB       1463 kB       8478 kB
-eng-swa              1458         18 kB         11 kB         37 kB
-ita-eng              3434         48 kB         36 kB        103 kB
-tur-deu               947         12 kB         11 kB         26 kB
-nld-fra             16776        270 kB        242 kB        692 kB
-lat-eng              2311         31 kB         23 kB         65 kB
-eng-fra              8805        129 kB        133 kB        369 kB
-deu-fra              8174        120 kB         80 kB        232 kB
-eng-hin             25647        419 kB       1062 kB       3274 kB
-dan-eng              4003         54 kB         41 kB        107 kB
-nld-deu             17230        277 kB        291 kB        807 kB
-jpn-deu               458          6 kB          5 kB         12 kB
-swa-eng              1554         19 kB         13 kB         43 kB
-fra-deu              6120         90 kB        104 kB        268 kB
-fra-eng              7837        120 kB        120 kB        322 kB
-deu-ita              4460         64 kB         36 kB        107 kB
-slo-eng               833         11 kB          9 kB         20 kB
-eng-rom               996         14 kB         12 kB         31 kB
-hin-eng             32971       1227 kB       1062 kB       3274 kB
-spa-eng              4508         66 kB         52 kB        137 kB
-eng-lat              3032         40 kB         39 kB        105 kB
-por-deu              8300        124 kB        109 kB        292 kB
-gla-deu               263          3 kB          3 kB          6 kB
-swe-eng              5226         71 kB         51 kB        137 kB
-scr-eng               401          6 kB          4 kB         11 kB
-deu-nld             12818        200 kB        189 kB        546 kB
-ita-deu              2929         40 kB         36 kB         92 kB
-fra-nld              9610        152 kB        191 kB        515 kB
-afr-deu              3806         52 kB         46 kB        127 kB
-ara-eng             83875       1953 kB        662 kB       2383 kB
-deu-por              8748        131 kB        105 kB        292 kB
-tur-eng            143818       4459 kB       1687 kB       4238 kB
-eng-spa              5913         84 kB         83 kB        228 kB
-eng-ara             83879       1349 kB        667 kB       2466 kB
-eng-rus              1699         23 kB         24 kB         71 kB
-wel-eng               734          9 kB          7 kB         17 kB
-hun-eng            139942       3346 kB       2240 kB       6612 kB
-eng-cro             59211       1220 kB        971 kB       2706 kB
-eng-por              9297        137 kB        164 kB        456 kB
-world95               277          5 kB        936 kB       2796 kB
-eng-wel              1066         13 kB         12 kB         31 kB
-cro-eng             79821       1791 kB       1016 kB       2899 kB
-lat-deu              1804         24 kB         20 kB         53 kB
-por-eng             10404        161 kB        118 kB        323 kB
-eng-nld              7720        120 kB        162 kB        450 kB
-eng-deu             93284       1710 kB       1386 kB       4351 kB
-iri-eng              1191         16 kB         11 kB         28 kB
-eng-tur             36597        580 kB       1687 kB       4238 kB
-eng-scr               605          7 kB          8 kB         21 kB
-eng-iri              1365         17 kB         18 kB         45 kB
-cze-eng               494          6 kB          5 kB         11 kB
-deu-eng             81696       1623 kB       1379 kB       4603 kB
-eng-ita              4521         59 kB         39 kB        123 kB
-eng-hun             87964       1848 kB       1808 kB       4845 kB
+fd-tur-eng           1032         14 kB         11 kB         24 kB
+fd-por-deu           8300        124 kB        110 kB        276 kB
+fd-nld-eng          22753        378 kB        366 kB        991 kB
+fd-eng-ara          87430       1404 kB        721 kB       2489 kB
+fd-spa-eng           4508         67 kB         77 kB        190 kB
+fd-eng-hun          89685       1907 kB       2158 kB       5876 kB
+fd-ita-eng           3435         48 kB         37 kB         92 kB
+fd-wel-eng            734          9 kB          7 kB         17 kB
+fd-eng-nld           7720        119 kB        168 kB        446 kB
+fd-fra-eng           8511        131 kB        138 kB        385 kB
+fd-tur-deu            947         13 kB         11 kB         24 kB
+fd-swe-eng           5226         71 kB         52 kB        128 kB
+fd-nld-fra          16776        270 kB        249 kB        672 kB
+fd-eng-swa           1458         18 kB         11 kB         37 kB
+fd-deu-nld          12818        200 kB        192 kB        524 kB
+fd-fra-deu           6120         90 kB        108 kB        275 kB
+fd-eng-cro          59211       1220 kB        971 kB       2706 kB
+fd-eng-ita           4525         59 kB         40 kB        108 kB
+fd-eng-lat           3032         40 kB         39 kB        100 kB
+fd-lat-eng           2311         31 kB         24 kB         62 kB
+fd-fra-nld           9610        152 kB        195 kB        502 kB
+fd-ita-deu           2929         40 kB         37 kB         87 kB
+fd-eng-hin          25648        418 kB       1041 kB       3019 kB
+fd-deu-eng          81622       1613 kB       1346 kB       4176 kB
+fd-por-eng          10667        164 kB        125 kB        315 kB
+fd-lat-deu           7342        107 kB        105 kB        365 kB
+fd-jpn-deu            447          5 kB          6 kB         12 kB
+fd-eng-deu          93279       1708 kB       1403 kB       4212 kB
+fd-eng-scr            605          7 kB          8 kB         21 kB
+fd-eng-rom            996         14 kB         12 kB         31 kB
+fd-iri-eng           1191         16 kB         11 kB         28 kB
+fd-cze-eng            494          6 kB          5 kB         11 kB
+fd-scr-eng            401          6 kB          4 kB         11 kB
+fd-eng-cze         150010       2482 kB       1463 kB       8478 kB
+fd-eng-rus           1699         23 kB         26 kB         71 kB
+fd-afr-deu           3806         52 kB         49 kB        129 kB
+fd-eng-por          15854        248 kB        239 kB        634 kB
+fd-hun-eng         139941       3343 kB       2244 kB       6184 kB
+fd-eng-swe           5485         71 kB         75 kB        191 kB
+fd-deu-ita           4460         64 kB         38 kB         99 kB
+fd-cro-eng          79821       1791 kB       1016 kB       2899 kB
+fd-dan-eng           4003         54 kB         43 kB        103 kB
+fd-eng-tur          36595        580 kB       1687 kB       4214 kB
+fd-eng-spa           5913         76 kB         81 kB        217 kB
+fd-nld-deu          17230        278 kB        306 kB        827 kB
+fd-deu-por           8748        130 kB        104 kB        270 kB
+fd-swa-eng           1554         19 kB         13 kB         43 kB
+fd-hin-eng          32971       1227 kB       1062 kB       3274 kB
+fd-deu-fra           8174        120 kB         81 kB        216 kB
+fd-eng-fra           8805        129 kB        137 kB        361 kB
+fd-slo-eng            833         11 kB          9 kB         20 kB
+fd-gla-deu            263          3 kB          4 kB          7 kB
+fd-eng-wel           1066         13 kB         12 kB         31 kB
+fd-eng-iri           1365         17 kB         18 kB         45 kB
 english                 0          0 kB          0 kB          0 kB
 trans                   0          0 kB          0 kB          0 kB
 all                     0          0 kB          0 kB          0 kB
