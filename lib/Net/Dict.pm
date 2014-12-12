@@ -18,7 +18,7 @@ use Net::Cmd;
 use Carp;
 
 use vars qw(@ISA $debug);
-our $VERSION = '2.18';
+our $VERSION = '2.19';
 
 #-----------------------------------------------------------------------
 # Default values for arguments to new(). We also use this to
