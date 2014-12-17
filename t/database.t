@@ -227,7 +227,7 @@ fd-swe-eng:Swedish-English FreeDict Dictionary ver. 0.1.1
 fd-tur-deu:Turkish-German FreeDict Dictionary ver. 0.1.1
 fd-tur-eng:Turkish-English FreeDict Dictionary ver. 0.2.1
 fd-wel-eng:Welsh-English Freedict dictionary
-foldoc:The Free On-line Dictionary of Computing (18 May 2012)
+foldoc:The Free On-line Dictionary of Computing (20 July 2014)
 gaz2k-counties:U.S. Gazetteer Counties (2000)
 gaz2k-places:U.S. Gazetteer Places (2000)
 gaz2k-zips:U.S. Gazetteer Zip Code Tabulation Areas (2000)

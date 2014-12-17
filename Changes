@@ -1,6 +1,7 @@
 Revision history for Perl module Net::Dict
 
-2.19 2014-12-12
+2.19 2014-12-17
+    - Fixed failing tests - caused by updated dictionaries on dict.org
     - Added a TODO.md file with the things I want to get around to doing.
 
 2.18 2014-06-26

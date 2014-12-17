@@ -220,7 +220,7 @@ moby-thesaurus      30263        528 kB         10 MB         28 MB
 elements              142          2 kB         17 kB         53 kB
 vera                11877        135 kB        222 kB        735 kB
 jargon               2314         40 kB        577 kB       1432 kB
-foldoc              14908        295 kB       2179 kB       5332 kB
+foldoc              15031        298 kB       2198 kB       5379 kB
 easton               3968         64 kB       1077 kB       2648 kB
 hitchcock            2619         34 kB         33 kB         85 kB
 bouvier              6797        128 kB       2338 kB       6185 kB
