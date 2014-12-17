@@ -14,3 +14,4 @@ t/define.t
 t/match.t
 t/auth.test
 t/lib/Net/Dict/TestConfig.pm
+TODO.md
