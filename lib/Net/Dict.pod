@@ -217,7 +217,7 @@ the dictionary $dbname.
 Specify the dictionaries that will be
 searched during the successive define() or match() calls.
 Defaults to '*'.
-No existance checks are performed by this interface, so you'd better make
+No existence checks are performed by this interface, so you'd better make
 sure the dictionaries you specify are on the server (e.g. by calling
 dbs()).
 

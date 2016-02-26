@@ -1,5 +1,8 @@
 Revision history for Perl module Net::Dict
 
+2.20 2016-??-??
+    - Fixed typo in doc. Patch from Gregor Herrmann. RT#112367
+
 2.19 2014-12-17
     - Fixed failing tests - caused by updated dictionaries on dict.org
     - Added a TODO.md file with the things I want to get around to doing.
