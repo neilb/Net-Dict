@@ -17,8 +17,8 @@ use IO::Socket;
 use Net::Cmd;
 use Carp;
 
-use vars qw(@ISA $debug);
-our $VERSION = '2.19';
+our $VERSION = '2.20';
+our $debug;
 
 #-----------------------------------------------------------------------
 # Default values for arguments to new(). We also use this to
@@ -33,7 +33,7 @@ my %ARG_DEFAULT =
  Client  => "Net::Dict v$VERSION",
 );
 
-@ISA = qw(Net::Cmd IO::Socket::INET);
+our @ISA = qw(Net::Cmd IO::Socket::INET);
 
 #=======================================================================
 #

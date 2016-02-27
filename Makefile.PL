@@ -1,7 +1,6 @@
 #
 # Makefile.PL for Net-Dict
 #
-# $Id: Makefile.PL,v 1.2 2003/05/05 23:56:17 neilb Exp $
 #
 
 use ExtUtils::MakeMaker;
