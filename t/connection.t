@@ -218,9 +218,9 @@ gcide              203645       3859 kB         12 MB         38 MB
 wn                 147311       3002 kB       9247 kB         29 MB
 moby-thesaurus      30263        528 kB         10 MB         28 MB
 elements              142          2 kB         17 kB         53 kB
-vera                11877        135 kB        222 kB        735 kB
-jargon               2314         40 kB        577 kB       1432 kB
-foldoc              15031        298 kB       2198 kB       5379 kB
+vera                12016        136 kB        213 kB        709 kB
+jargon               2314         40 kB        565 kB       1346 kB
+foldoc              15126        300 kB       2210 kB       5411 kB
 easton               3968         64 kB       1077 kB       2648 kB
 hitchcock            2619         34 kB         33 kB         85 kB
 bouvier              6797        128 kB       2338 kB       6185 kB
@@ -235,7 +235,7 @@ fd-por-deu           8300        124 kB        110 kB        276 kB
 fd-nld-eng          22753        378 kB        366 kB        991 kB
 fd-eng-ara          87430       1404 kB        721 kB       2489 kB
 fd-spa-eng           4508         67 kB         77 kB        190 kB
-fd-eng-hun          89685       1907 kB       2158 kB       5876 kB
+fd-eng-hun          89685       1907 kB       2159 kB       5876 kB
 fd-ita-eng           3435         48 kB         37 kB         92 kB
 fd-wel-eng            734          9 kB          7 kB         17 kB
 fd-eng-nld           7720        119 kB        168 kB        446 kB
@@ -253,11 +253,11 @@ fd-lat-eng           2311         31 kB         24 kB         62 kB
 fd-fra-nld           9610        152 kB        195 kB        502 kB
 fd-ita-deu           2929         40 kB         37 kB         87 kB
 fd-eng-hin          25648        418 kB       1041 kB       3019 kB
-fd-deu-eng          81622       1613 kB       1346 kB       4176 kB
+fd-deu-eng          81627       1614 kB       1346 kB       4176 kB
 fd-por-eng          10667        164 kB        125 kB        315 kB
 fd-lat-deu           7342        107 kB        105 kB        365 kB
 fd-jpn-deu            447          5 kB          6 kB         12 kB
-fd-eng-deu          93279       1708 kB       1403 kB       4212 kB
+fd-eng-deu          93283       1708 kB       1403 kB       4212 kB
 fd-eng-scr            605          7 kB          8 kB         21 kB
 fd-eng-rom            996         14 kB         12 kB         31 kB
 fd-iri-eng           1191         16 kB         11 kB         28 kB
@@ -267,7 +267,7 @@ fd-eng-cze         150010       2482 kB       1463 kB       8478 kB
 fd-eng-rus           1699         23 kB         26 kB         71 kB
 fd-afr-deu           3806         52 kB         49 kB        129 kB
 fd-eng-por          15854        248 kB        239 kB        634 kB
-fd-hun-eng         139941       3343 kB       2244 kB       6184 kB
+fd-hun-eng         139941       3344 kB       2245 kB       6184 kB
 fd-eng-swe           5485         71 kB         75 kB        191 kB
 fd-deu-ita           4460         64 kB         38 kB         99 kB
 fd-cro-eng          79821       1791 kB       1016 kB       2899 kB

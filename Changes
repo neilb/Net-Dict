@@ -1,6 +1,8 @@
 Revision history for Perl module Net::Dict
 
-2.20 2016-??-??
+2.20 2016-02-27 NEILB
+    - Updated tests to reflect changes in dict.org databases.
+      Thanks to SREZIC for pointing out that they'd changed.
     - Fixed typo in doc. Patch from Gregor Herrmann. RT#112367
 
 2.19 2014-12-17

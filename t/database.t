@@ -177,7 +177,7 @@ fd-afr-deu:Afrikaans-German FreeDict Dictionary ver. 0.3
 fd-cro-eng:Croatian-English Freedict Dictionary
 fd-cze-eng:Czech-English Freedict dictionary
 fd-dan-eng:Danish-English FreeDict Dictionary ver. 0.2.1
-fd-deu-eng:German-English FreeDict Dictionary ver. 0.3.3
+fd-deu-eng:German-English FreeDict Dictionary ver. 0.3.4
 fd-deu-fra:German-French FreeDict Dictionary ver. 0.3.1
 fd-deu-ita:German-Italian FreeDict Dictionary ver. 0.1.1
 fd-deu-nld:German-Dutch FreeDict Dictionary ver. 0.1.1
@@ -185,7 +185,7 @@ fd-deu-por:German-Portuguese FreeDict Dictionary ver. 0.2.1
 fd-eng-ara:English-Arabic FreeDict Dictionary ver. 0.6.2
 fd-eng-cro:English-Croatian Freedict Dictionary
 fd-eng-cze:English-Czech fdicts/FreeDict Dictionary
-fd-eng-deu:English-German FreeDict Dictionary ver. 0.3.5
+fd-eng-deu:English-German FreeDict Dictionary ver. 0.3.6
 fd-eng-fra:English-French FreeDict Dictionary ver. 0.1.4
 fd-eng-hin:English-Hindi FreeDict Dictionary ver. 1.5.1
 fd-eng-hun:English-Hungarian FreeDict Dictionary ver. 0.1
@@ -207,7 +207,7 @@ fd-fra-eng:French-English FreeDict Dictionary ver. 0.3.4
 fd-fra-nld:French-Dutch FreeDict Dictionary ver. 0.1.2
 fd-gla-deu:Scottish Gaelic-German FreeDict Dictionary ver. 0.1.1
 fd-hin-eng:English-Hindi Freedict Dictionary [reverse index]
-fd-hun-eng:Hungarian-English FreeDict Dictionary ver. 0.3
+fd-hun-eng:Hungarian-English FreeDict Dictionary ver. 0.3.1
 fd-iri-eng:Irish-English Freedict dictionary
 fd-ita-deu:Italian-German FreeDict Dictionary ver. 0.1.1
 fd-ita-eng:Italian-English FreeDict Dictionary ver. 0.1.1
@@ -227,7 +227,7 @@ fd-swe-eng:Swedish-English FreeDict Dictionary ver. 0.1.1
 fd-tur-deu:Turkish-German FreeDict Dictionary ver. 0.1.1
 fd-tur-eng:Turkish-English FreeDict Dictionary ver. 0.2.1
 fd-wel-eng:Welsh-English Freedict dictionary
-foldoc:The Free On-line Dictionary of Computing (20 July 2014)
+foldoc:The Free On-line Dictionary of Computing (18 March 2015)
 gaz2k-counties:U.S. Gazetteer Counties (2000)
 gaz2k-places:U.S. Gazetteer Places (2000)
 gaz2k-zips:U.S. Gazetteer Zip Code Tabulation Areas (2000)
@@ -236,7 +236,7 @@ hitchcock:Hitchcock's Bible Names Dictionary (late 1800's)
 jargon:The Jargon File (version 4.4.7, 29 Dec 2003)
 moby-thesaurus:Moby Thesaurus II by Grady Ward, 1.0
 trans:Translating Dictionaries
-vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms (January 2014)
+vera:V.E.R.A. -- Virtual Entity of Relevant Acronyms (September 2014)
 wn:WordNet (r) 3.0 (2006)
 world02:CIA World Factbook 2002
 ==== dbtitle-wn ====
