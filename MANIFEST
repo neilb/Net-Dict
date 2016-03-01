@@ -8,6 +8,7 @@ dict
 tkdict
 examples/simple.pl
 examples/portuguese.pl
+t/01-require.t
 t/connection.t
 t/database.t
 t/define.t

@@ -3,7 +3,8 @@
 # match.t - Net::Dict testsuite for match() method
 #
 
-use Test::More 0.88 tests => 15;
+use Test::More 0.88;
+use Test::RequiresInternet 0.05 ('dict.org' => 2628);
 use Test::Differences qw/ eq_or_diff /;
 use Net::Dict;
 use lib 't/lib';
@@ -20,6 +21,8 @@ my $string;
 my $dbinfo;
 my %strathash;
 my $title;
+
+plan tests => 15;
 
 if (defined $VERBOSE && $VERBOSE==1) {
     print STDERR "\nVERBOSE ON\n";

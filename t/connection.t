@@ -6,7 +6,8 @@ use Net::Dict;
 use strict;
 $^W = 1;
 
-use Test::More 0.88 tests => 17;
+use Test::More 0.88;
+use Test::RequiresInternet 0.05 ('dict.org' => 2628);
 use Test::Differences qw/ eq_or_diff /;
 
 use lib 't/lib';
@@ -19,6 +20,8 @@ my @caps;
 my $description;
 my $dict;
 my $string;
+
+plan tests => 17;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 

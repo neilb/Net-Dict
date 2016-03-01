@@ -3,7 +3,8 @@
 # define.t - Net::Dict testsuite for define() method
 #
 
-use Test::More 0.88 tests => 16;
+use Test::More 0.88;
+use Test::RequiresInternet 0.05 ('dict.org' => 2628);
 use Net::Dict;
 use lib 't/lib';
 use Net::Dict::TestConfig qw/ $TEST_HOST $TEST_PORT /;
@@ -17,6 +18,8 @@ my $section;
 my $string;
 my $dbinfo;
 my $title;
+
+plan tests => 16;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 

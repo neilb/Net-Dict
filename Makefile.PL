@@ -44,6 +44,7 @@ if ($mm_ver =~ /_/) { # dev version
         ? (TEST_REQUIRES => {
                 'Test::More' => 0.88,
                 'Test::Differences' => 0.62,
+                'Test::RequiresInternet' => 0.05,
           })
         : ()
     ),

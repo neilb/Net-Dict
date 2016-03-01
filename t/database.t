@@ -3,7 +3,8 @@
 # database.t - Net::Dict testsuite for database related methods
 #
 
-use Test::More 0.88 tests => 13;
+use Test::More 0.88;
+use Test::RequiresInternet 0.05 ('dict.org' => 2628);
 use Test::Differences qw/ eq_or_diff /;
 use Net::Dict;
 use lib 't/lib';
@@ -17,6 +18,8 @@ my $section;
 my $string;
 my $dbinfo;
 my $title;
+
+plan tests => 13;
 
 $SIG{__WARN__} = sub { $WARNING = join('', @_); };
 

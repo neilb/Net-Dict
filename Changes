@@ -1,5 +1,12 @@
 Revision history for Perl module Net::Dict
 
+2.21 2016-03-01 NEILB
+    - Use Test::RequiresInternet to skip tests if you don't have
+      an internet connection and ability to connect to dict.org's
+      DICT server. This is a holding position until I can add a
+      mock DICT server. Added a basic require test, so there's
+      always at least one test that should pass.
+
 2.20 2016-02-27 NEILB
     - Updated tests to reflect changes in dict.org databases.
       Thanks to SREZIC for pointing out that they'd changed.
