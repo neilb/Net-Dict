@@ -6,7 +6,7 @@ Net::Dict - client API for accessing dictionary servers (RFC 2229)
 =head1 SYNOPSIS
 
     use Net::Dict;
-    
+
     $dict = Net::Dict->new('dict.server.host');
     $h    = $dict->define("word");
     foreach $i (@{$h}) {
