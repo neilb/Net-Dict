@@ -63,13 +63,13 @@ the specified dictionary.
 
 =head2 MATCHING WORDS
 
-In addition the looking up word definitions,
+In addition to looking up word definitions,
 you can lookup a list of words which match a given
 pattern, using the B<match()> method.
 Each DICT server typically supports a number of I<strategies>
 which can be used to match words against a pattern.
 For example, using B<prefix> strategy with a pattern "anti"
-would find all words in databases which start with "anti":
+would find all words which start with "anti" in all databases:
 
  @mref = $dict->match('anti', 'prefix');
  foreach my $match (@{ $mref }) {
@@ -146,7 +146,7 @@ Defaults to 120.
 
 =item B<Debug>
 
-The debug level - a non-zero value will resulting in debugging
+The debug level - a non-zero value will result in debugging
 information being generated, particularly when errors occur.
 Can be changed later using the C<debug> method,
 which is inherited from Net::Cmd.
@@ -177,15 +177,15 @@ empty list.
 
 =head2 define ( $word [, @dbs] )
 
-returns a reference to an array, whose members are lists,
+Returns a reference to an array, whose members are lists,
 consisting of two elements: the dictionary name and the definition.
 If no dictionaries are specified, those set by setDicts() are used.
 
 
 =head2 match ( $pattern, $strategy [, @dbs] )
 
-Looks for words which match $pattern according to the specified
-matching $strategy.
+Looks for words which match C<$pattern> according to the specified
+matching C<$strategy>.
 Returns a reference to an array,
 each entry of which is a reference to a two-element
 array: database name, matching word.
@@ -209,7 +209,7 @@ This is the C<SHOW DATABASES> command from RFC 2229.
 =head2 dbInfo ( $dbname )
 
 Returns a string, containing description of
-the dictionary $dbname. 
+the dictionary C<$dbname>.
 
 
 =head2 setDicts ( @dicts )
@@ -224,7 +224,7 @@ dbs()).
 
 =head2 strategies
 
-returns an array, containing an ID of a matching strategy
+Returns an array, containing an ID of a matching strategy
 as a key and a verbose description as a value.
 
 This method was previously called strats();
@@ -235,7 +235,7 @@ for backwards compatibility.
 
 Attempt to authenticate the specified user, using the scheme
 described on page 18 of RFC 2229.
-The user should be known to the server, and $PASSPHRASE
+The user should be known to the server, and C<$PASSPHRASE>
 is a shared secret known only to the server and the user.
 
 For example, if you were using dictd from dict.org,
@@ -287,7 +287,7 @@ as described on pages 7 and 8 of RFC 2229.
 =head2 has_capability ( $cap_name )
 
 Returns true (non-zero) if the DICT server supports the
-specified capability; false (zero) otherwise. Eg
+specified capability; false (zero) otherwise. E.g.:
 
  if ($dict->has_capability('auth')) {
      $dict->auth('genie', 'open sesame');
@@ -377,7 +377,7 @@ Dmitry Rubinstein E<lt>dimrub@wisdom.weizmann.ac.ilE<gt>,
 using Net::FTP and Net::SMTP as a pattern and a model for imitation.
 
 The module was extended, and is now maintained, by
-Neil Bowers E<lt>neil@bowers.comE<gt>
+Neil Bowers E<lt>neil@bowers.comE<gt>.
 
 =head1 COPYRIGHT
 
