@@ -34,8 +34,9 @@ $| = 1;
 #-----------------------------------------------------------------------
 # Create instance of Net::Dict, connecting to the server
 #-----------------------------------------------------------------------
-print "Connecting to $host ...";
-$dict = Net::Dict->new($host);   
+print "Connecting to $host ...\n";
+$dict = Net::Dict->new($host);
+die "Could not connect: $!" if !defined $dict;
 $dict->setDicts($database);
 
 #-----------------------------------------------------------------------
@@ -58,8 +59,6 @@ while(<>)
 	foreach $entry (@$eref)
 	{
 	    ($db, $translation) = @$entry;
-	    $translation =~ y/[\200-\377]/[\200-\377]/UC;
-
 	    print "$db--------\n",$translation;
 	}
     }
