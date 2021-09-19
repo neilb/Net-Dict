@@ -224,7 +224,7 @@ dbs()).
 
 =head2 strategies
 
-returns an array, containing an ID of a matching strategy
+Returns a hash, containing an ID of a matching strategy
 as a key and a verbose description as a value.
 
 This method was previously called strats();
