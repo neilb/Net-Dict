@@ -71,7 +71,7 @@ which can be used to match words against a pattern.
 For example, using B<prefix> strategy with a pattern "anti"
 would find all words in databases which start with "anti":
 
- @mref = $dict->match('anti', 'prefix');
+ $mref = $dict->match('anti', 'prefix');
  foreach my $match (@{ $mref }) {
      ($db, $word) = @{ $match };
  }
